@@ -7,6 +7,8 @@ export default {
 
     permissions: ['ADMINISTRATOR'],
 
+    slash: false,
+
     callback: async ({ text }) => {
         const json = JSON.parse(text)
 
