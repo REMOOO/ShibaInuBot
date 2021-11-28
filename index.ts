@@ -26,6 +26,10 @@ client.on('ready', () => {
             {
                 name: 'Text',
                 emoji: '👩‍💻'
+            },
+            {
+                name: 'Moderation',
+                emoji : '🛡️'
             }
         ])
 })

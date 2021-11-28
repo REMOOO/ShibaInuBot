@@ -5,7 +5,6 @@ export default {
     category: 'Text',
     description: 'Sends an embed. Only works for administrators.',
 
-    slash: 'both',
     permissions: ['ADMINISTRATOR'],
 
     callback: async ({ text }) => {
