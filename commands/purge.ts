@@ -2,7 +2,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Moderation',
-    description: 'Deletes multiple messages at once.',
+    description: 'Deletes multiple messages at once. Only works for administrators.',
 
     permissions: ['ADMINISTRATOR'],
     
