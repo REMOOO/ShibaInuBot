@@ -5,8 +5,6 @@ export default {
     category: 'Text',
     description: 'Adds two numbers together',
 
-    permissions: ['ADMINISTRATOR'],
-
     slash: 'both',
 
     expectedArgs: '<number1> <number2>',
