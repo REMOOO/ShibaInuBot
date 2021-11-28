@@ -1,8 +1,11 @@
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands"
 
 export default {
     category: 'Text',
     description: 'Adds two numbers together',
+
+    permissions: ['ADMINISTRATOR'],
 
     slash: 'both',
 
@@ -16,6 +19,9 @@ export default {
 
         const sum = number1 + number2;
 
-        return `${number1} + ${number2} = ${sum}`
+        const embed = new MessageEmbed()
+            .setTitle(`${number1} + ${number2} = ${sum}`)
+
+        return embed
     },
 } as ICommand
