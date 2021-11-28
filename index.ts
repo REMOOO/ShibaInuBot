@@ -7,7 +7,9 @@ dotenv.config()
 const client = new DiscordJS.Client({
     intents: [
         Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_PRESENCES,
     ]
 })
 
@@ -20,6 +22,12 @@ client.on('ready', () => {
         testServers: '914555144039972944',
     })
         .setDefaultPrefix('$')
+        .setCategorySettings([
+            {
+                name: 'Text',
+                emoji: '👩‍💻'
+            }
+        ])
 })
 
 client.login(process.env.TOKEN)

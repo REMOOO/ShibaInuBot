@@ -16,6 +16,6 @@ export default {
 
         const sum = number1 + number2;
 
-        return `The sum is ${sum}`
+        return `${number1} + ${number2} = ${sum}`
     },
 } as ICommand
