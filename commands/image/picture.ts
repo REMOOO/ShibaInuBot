@@ -4,14 +4,14 @@ const getter = require("reddit-image-fetcher")
 
 export default {
     category: 'Image',
-    description: 'Get a random picture',
+    description: 'Get a random picture.',
     aliases : ['pic'],
 
     slash: 'both',
 
     callback: async ({}) => {
         let subreddits = ["pics", "pic", "images"]
-        
+
         const res = await getter.fetch({
             type: 'custom',
             subreddit: subreddits

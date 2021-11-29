@@ -4,7 +4,7 @@ const getter = require("reddit-image-fetcher")
 
 export default {
     category: 'Image',
-    description: 'Get a genshin impact related image',
+    description: 'Get a genshin impact related image.',
 
     slash: 'both',
 

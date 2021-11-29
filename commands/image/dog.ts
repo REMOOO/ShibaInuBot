@@ -4,7 +4,7 @@ const getter = require("reddit-image-fetcher")
 
 export default {
     category: 'Image',
-    description: 'Get an image of a cute doggo',
+    description: 'Get an image of a cute doggo.',
 
     slash: 'both',
 
