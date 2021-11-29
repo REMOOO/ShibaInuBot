@@ -16,10 +16,12 @@ export default {
         if (!target) {
             const embed = new MessageEmbed()
                 .setTitle(`You are ${getShibaRate()}% shiba 🐕. Woof!`)
+                .setColor("ORANGE")
             return embed
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`${target.user.username} is ${getShibaRate()}% shiba 🐕. Woof!`)
+                .setColor("ORANGE")
             return embed
         }
     }

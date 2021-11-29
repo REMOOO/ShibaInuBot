@@ -23,6 +23,7 @@ export default {
                     .setTitle(`Shipped ${message.author.username} with ${randomUser?.username}`)
                     .setDescription(`💕 ${shipArray[0]}%\n\n${shipArray[1]}`)
                     .setThumbnail(randomUser?.displayAvatarURL({dynamic: true, size: 4096}))
+                    .setColor("LUMINOUS_VIVID_PINK")
                 return embed
             } else {
                 const randomUser = interaction.guild?.members.cache.random()?.user!
@@ -32,6 +33,7 @@ export default {
                     .setTitle(`Shipped ${interaction.user.username} with ${randomUser?.username}`)
                     .setDescription(`💕 ${shipArray[0]}%\n\n${shipArray[1]}`)
                     .setThumbnail(randomUser?.displayAvatarURL({dynamic: true, size: 4096}))
+                    .setColor("LUMINOUS_VIVID_PINK")
                 return embed
             }
         } else {
@@ -42,6 +44,7 @@ export default {
                     .setTitle(`Shipped ${message.author.username} with ${target.user.username}`)
                     .setDescription(`💕 ${shipArray[0]}%\n\n${shipArray[1]}`)
                     .setThumbnail(target.user.displayAvatarURL({dynamic: true, size: 4096}))
+                    .setColor("LUMINOUS_VIVID_PINK")
                 return embed
             } else {
                 const shipArray = ship()
@@ -50,6 +53,7 @@ export default {
                     .setTitle(`Shipped ${interaction.user.username} with ${target.user.username}`)
                     .setDescription(`💕 ${shipArray[0]}%\n\n${shipArray[1]}`)
                     .setThumbnail(target.user.displayAvatarURL({dynamic: true, size: 4096}))
+                    .setColor("LUMINOUS_VIVID_PINK")
                 return embed
             }
         }

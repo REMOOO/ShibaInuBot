@@ -16,10 +16,12 @@ export default {
         if (!target) {
             const embed = new MessageEmbed()
                 .setTitle(`You are ${getWaifuRate()}% waifu 😍`)
+                .setColor("RED")
             return embed
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`${target.user.username} is ${getWaifuRate()}% waifu 😍`)
+                .setColor("RED")
             return embed
         }
     }

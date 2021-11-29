@@ -16,10 +16,12 @@ export default {
         if (!target) {
             const embed = new MessageEmbed()
                 .setTitle(`You are ${getFurryRate()}% furry 😻. UwU!`)
+                .setColor("DARK_ORANGE")
             return embed
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`${target.user.username} is ${getFurryRate()}% furry 😻. UwU!`)
+                .setColor("DARK_ORANGE")
             return embed
         }
     }

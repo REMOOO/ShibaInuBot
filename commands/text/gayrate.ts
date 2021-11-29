@@ -16,10 +16,12 @@ export default {
         if (!target) {
             const embed = new MessageEmbed()
                 .setTitle(`You are ${getGayRate()}% gay 🏳️‍🌈`)
+                .setColor("PURPLE")
             return embed
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`${target.user.username} is ${getGayRate()}% gay 🏳️‍🌈`)
+                .setColor("PURPLE")
             return embed
         }
     }

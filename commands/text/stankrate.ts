@@ -16,10 +16,12 @@ export default {
         if (!target) {
             const embed = new MessageEmbed()
                 .setTitle(`You are ${getStankRate()}% stanky 🤮`)
+                .setColor("GREEN")
             return embed
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`${target.user.username} is ${getStankRate()}% stanky 🤮`)
+                .setColor("GREEN")
             return embed
         }
     }
