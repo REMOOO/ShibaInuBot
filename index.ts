@@ -14,12 +14,18 @@ const client = new DiscordJS.Client({
 })
 
 client.on('ready', () => {
-    console.log('The bot is ready')
+    const guilds = [""]
+    client.guilds.cache.forEach(guild => {
+        guilds.push(guild.name)
+    })
+    console.log(guilds)
+    console.log(`Count servers: ${guilds.length - 1}`)
 
     new WOKCommands(client, {
         commandsDir: path.join(__dirname, 'commands'),
         typeScript: true,
         testServers: '914555144039972944',
+        botOwners: '267411432339931137',
     })
         .setDefaultPrefix('$')
         .setCategorySettings([
@@ -36,7 +42,6 @@ client.on('ready', () => {
                 emoji : '🛡️'
             }
         ])
-        .setBotOwner('267411432339931137')
 })
 
 client.login(process.env.TOKEN)
