@@ -4,7 +4,7 @@ const Canvas = require('canvas')
 
 export default {
     category: 'Image',
-    description: 'Mirror an image',
+    description: 'Mirror an image.',
 
     slash: 'both',
 
