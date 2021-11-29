@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Image',
-    description: ' Get the avatar image of a user.',
+    description: 'Get the avatar image of a user.',
 
     slash: 'both',
     
