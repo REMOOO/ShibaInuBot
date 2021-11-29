@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Eat the fortune cookie to find your fortune',
+    description: 'Eat the fortune cookie to find your fortune.',
 
     slash: true,
     

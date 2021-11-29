@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands"
 
 export default {
     category: 'Text',
-    description: 'Adds two numbers together',
+    description: 'Adds two numbers together.',
 
     slash: 'both',
 

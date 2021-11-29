@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Measure the waifu of a user',
+    description: 'Measure the waifu of a user.',
 
     slash: 'both',
 
