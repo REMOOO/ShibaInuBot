@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 import { MessageEmbed } from "discord.js";
-const getter = require("reddit-api-image-getter")
+const getter = require("reddit-image-fetcher")
 
 export default {
     category: 'Image',
@@ -10,16 +10,15 @@ export default {
 
     callback: async ({}) => {
         let subreddits = ["lookatmydog", "dogpictures"]
-        let subreddit = subreddits[Math.floor(Math.random()*(subreddits.length))]
 
-        let api = new getter()
-
-        const res = await api.getHotImagesOfSubReddit(subreddit)
-        const post = res[Math.floor(Math.random() * res.length)]
+        const res = await getter.fetch({
+            type: 'custom',
+            subreddit: subreddits
+        })
 
         const embed = new MessageEmbed()
-                    .setTitle(post.title)
-                    .setImage(post.url)
+                    .setTitle(res[0].title)
+                    .setImage(res[0].image)
                 return embed
     }
 } as ICommand
