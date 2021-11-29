@@ -3,9 +3,10 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Sends an embed. Only works for administrators.',
+    description: 'Sends an embed. Only works on test server of Shiba Inu Bot.',
 
     permissions: ['ADMINISTRATOR'],
+    testOnly: true,
 
     slash: false,
 
