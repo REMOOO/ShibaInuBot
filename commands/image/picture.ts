@@ -5,6 +5,7 @@ const getter = require("reddit-api-image-getter")
 export default {
     category: 'Image',
     description: 'Get a random picture',
+    aliases : ['pic'],
 
     slash: 'both',
 
