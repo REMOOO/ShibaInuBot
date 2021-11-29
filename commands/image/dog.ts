@@ -9,7 +9,7 @@ export default {
     slash: 'both',
 
     callback: async ({}) => {
-        let subreddits = ["dogs", "lookatmydog"]
+        let subreddits = ["lookatmydog", "dogpictures"]
         let subreddit = subreddits[Math.floor(Math.random()*(subreddits.length))]
 
         let api = new getter()
