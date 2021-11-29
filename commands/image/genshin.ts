@@ -16,8 +16,16 @@ export default {
             subreddit: subreddits
         })
 
+        let title = ""
+
+        if(res[0].title.length > 256) {
+            title = "Genshin Impact"
+        } else {
+            title = res[0].title
+        }
+
         const embed = new MessageEmbed()
-                    .setTitle(res[0].title)
+                    .setTitle(title)
                     .setImage(res[0].image)
                 return embed
     }
