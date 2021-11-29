@@ -36,6 +36,7 @@ client.on('ready', () => {
                 emoji : '🛡️'
             }
         ])
+        .setBotOwner('267411432339931137')
 })
 
 client.login(process.env.TOKEN)
