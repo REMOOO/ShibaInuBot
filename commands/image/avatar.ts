@@ -14,10 +14,17 @@ export default {
     callback: ({ message, interaction }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         if (!target) {
-            const embed = new MessageEmbed()
-                .setTitle(`Your avatar`)
-                .setImage(`${message.author.displayAvatarURL({dynamic: true})}?size=2048`)
-            return embed
+            if (!interaction) {
+                const embed = new MessageEmbed()
+                    .setTitle(`Your avatar`)
+                    .setImage(`${message.author.displayAvatarURL({dynamic: true})}?size=2048`)
+                return embed
+            } else {
+                const embed = new MessageEmbed()
+                    .setTitle(`Your avatar`)
+                    .setImage(`${interaction.user.displayAvatarURL({dynamic: true})}?size=2048`)
+                return embed
+            }
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`Avatar of ${target.user.username}`)
