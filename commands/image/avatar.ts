@@ -17,18 +17,18 @@ export default {
             if (!interaction) {
                 const embed = new MessageEmbed()
                     .setTitle(`Your avatar`)
-                    .setImage(`${message.author.displayAvatarURL({dynamic: true})}?size=2048`)
+                    .setImage(`${message.author.displayAvatarURL({dynamic: true, size: 4096})}`)
                 return embed
             } else {
                 const embed = new MessageEmbed()
                     .setTitle(`Your avatar`)
-                    .setImage(`${interaction.user.displayAvatarURL({dynamic: true})}?size=2048`)
+                    .setImage(`${interaction.user.displayAvatarURL({dynamic: true, size: 4096})}`)
                 return embed
             }
         } else {
             const embed = new MessageEmbed()
                 .setTitle(`Avatar of ${target.user.username}`)
-                .setImage(`${target.user.displayAvatarURL({dynamic: true})}?size=2048`)
+                .setImage(`${target.user.displayAvatarURL({dynamic: true, size: 4096})}`)
             return embed
         }
     }
