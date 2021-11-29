@@ -9,9 +9,12 @@ export default {
     slash: 'both',
 
     callback: async ({}) => {
+        let subreddits = ["dogs", "lookatmydog"]
+        let subreddit = subreddits[Math.floor(Math.random()*(subreddits.length))]
+
         let api = new getter()
 
-        const res = await api.getHotImagesOfSubReddit("dogpictures")
+        const res = await api.getHotImagesOfSubReddit(subreddit)
         const post = res[Math.floor(Math.random() * res.length)]
 
         const embed = new MessageEmbed()
