@@ -1,5 +1,5 @@
 import { GuildMember, MessageEmbed } from "discord.js";
-import { CommandErrors, ICommand } from "wokcommands";
+import { ICommand } from "wokcommands";
 import axios from "axios"
 
 export default {
@@ -30,9 +30,17 @@ export default {
                         .setImage(`https://cdn.discordapp.com/banners/${message.author.id}/${data.banner}${url}`)
                     return embed
                 } else {
-                    const embed = new MessageEmbed()
-                        .setTitle("You don't have a banner 🙄")
-                    return embed
+                    if (data.banner_color) {
+                        const embed = new MessageEmbed()
+                            .setTitle("You don't have a banner 🙄")
+                            .setDescription(`Anyway, your banner color is ${data.banner_color}`)
+                            .setColor(data.banner_color)
+                        return embed
+                    } else {
+                        const embed = new MessageEmbed()
+                            .setTitle("You don't have a banner 🙄")
+                        return embed
+                    }
                 }
             } else {
                 const data = await axios.get(`https://discord.com/api/users/${interaction.user.id}`,{
@@ -48,9 +56,17 @@ export default {
                         .setImage(`https://cdn.discordapp.com/banners/${interaction.user.id}/${data.banner}${url}`)
                     return embed
                 } else {
-                    const embed = new MessageEmbed()
-                        .setTitle("You don't have a banner 🙄")
-                    return embed
+                    if (data.banner_color) {
+                        const embed = new MessageEmbed()
+                            .setTitle("You don't have a banner 🙄")
+                            .setDescription(`Anyway, your banner color is ${data.banner_color}`)
+                            .setColor(data.banner_color)
+                        return embed
+                    } else {
+                        const embed = new MessageEmbed()
+                            .setTitle("You don't have a banner 🙄")
+                        return embed
+                    }
                 }
             }
 
@@ -68,9 +84,17 @@ export default {
                     .setImage(`https://cdn.discordapp.com/banners/${target.user.id}/${data.banner}${url}`)
                 return embed
             } else {
-                const embed = new MessageEmbed()
-                    .setTitle(`${target.user.username} doesn't have a banner 🙄`)
-                return embed
+                if (data.banner_color) {
+                    const embed = new MessageEmbed()
+                        .setTitle(`${target.user.username} doesn't have a banner 🙄`)
+                        .setDescription(`Anyway, the banner color of ${target.user.username} is ${data.banner_color}`)
+                        .setColor(data.banner_color)
+                    return embed
+                } else {
+                    const embed = new MessageEmbed()
+                        .setTitle(`${target.user.username} doesn't have a banner 🙄`)
+                    return embed
+                }
             }
         }
     },
