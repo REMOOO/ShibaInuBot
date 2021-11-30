@@ -31,7 +31,7 @@ export default {
                     ctx.scale(-1,1)
                     ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
     
-                    const attachment = new MessageAttachment(canvas.toBuffer(), 'magik.png')
+                    const attachment = new MessageAttachment(canvas.toBuffer(), 'mirror.png')
                     
                     message.channel.send({files: [attachment]})
                 })
@@ -50,7 +50,7 @@ export default {
                     ctx.scale(-1,1)
                     ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
     
-                    const attachment = new MessageAttachment(canvas.toBuffer(), 'magik.png')
+                    const attachment = new MessageAttachment(canvas.toBuffer(), 'mirror.png')
 
                     interaction.reply({
                         files: [attachment]
@@ -72,7 +72,7 @@ export default {
             ctx.scale(-1,1)
             ctx.drawImage(avatar, 0, 0, canvas.width, canvas.height)
 
-            const attachment = new MessageAttachment(canvas.toBuffer(), 'magik.png')
+            const attachment = new MessageAttachment(canvas.toBuffer(), 'mirror.png')
 
             if (!interaction) {
                 message.channel.send({files: [attachment]})
