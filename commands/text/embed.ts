@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Sends an embed with a random color. Split title & description with comma (,)',
+    description: 'Sends an embed with a random color. Split title & description with comma (,).',
 
     permissions: ['ADMINISTRATOR'],
 
