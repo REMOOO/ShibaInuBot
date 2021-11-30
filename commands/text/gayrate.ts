@@ -4,6 +4,7 @@ import { ICommand } from "wokcommands";
 export default {
     category: 'Text',
     description: 'Measure the gayness of a user.',
+    aliases: ['howgay'],
 
     slash: 'both',
 
