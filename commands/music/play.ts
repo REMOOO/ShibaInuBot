@@ -22,12 +22,16 @@ export default {
             ephemeral: true
         })
 
-        await interaction.reply({ content: "Song added", ephemeral: true})
+        interaction.reply({ content: "Song added", ephemeral: true})
 
-        music.play({
-            interaction: interaction,
-            channel: voiceChannel,
-            song: song
-        })
+        try {
+            await music.play({
+                interaction: interaction,
+                channel: voiceChannel,
+                song: song
+            })
+        } catch(error) {
+            interaction.channel?.send({ content: `There was no song found with the name/URL '${song}', please try again ${member?.user.username}`})
+        }
     }
 } as ICommand
