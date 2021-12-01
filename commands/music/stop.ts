@@ -13,7 +13,7 @@ export default {
 
         if (!isConnected) return interaction.reply({ content: "There are no songs playing, noob.", ephemeral: true})
 
-        const queue = music.queue({
+        const queue = music.getQueue({
             interaction: interaction
         })
         if (queue.length === 0) return interaction.reply({ content: "No music is playing.", ephemeral: true})
