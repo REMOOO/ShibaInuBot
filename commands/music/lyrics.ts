@@ -21,7 +21,15 @@ export default {
             song = interaction.options.getString("song")!
         }
 
-        const searches = await Client.songs.search(song)
+        let searches
+
+        try {
+            searches = await Client.songs.search(song)
+        } catch(error) {
+            const embed = new MessageEmbed()
+                .setTitle(`No result was found.`)
+            return embed
+        }
 
         const firstSong = searches[0]
 
