@@ -20,6 +20,7 @@
   "homepage": "https://github.com/marvindeckmyn/ShibaInuBot#readme",
   "dependencies": {
     "@koenie06/discord.js-music": "^1.2.9",
+    "abort-controller": "^3.0.0",
     "axios": "^0.24.0",
     "canvas": "^2.8.0",
     "convert": "^4.3.0",

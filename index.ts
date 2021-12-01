@@ -1,3 +1,4 @@
+global.AbortController = require("abort-controller")
 import DiscordJS, { Intents } from 'discord.js'
 import WOKCommands from 'wokcommands'
 import path from 'path'
