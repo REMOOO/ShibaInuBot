@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
 export default {
-    category: 'space',
+    category: 'Image',
     description: 'Add spacehotel.co logo to an image.',
     aliases: ['spacehotel'],
 
