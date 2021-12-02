@@ -12,10 +12,15 @@ export default {
         })
 
         if (!isConnected) return interaction.reply({ content: "There are no songs playing, noob.", ephemeral: true})
-
-        const queue = await music.getQueue({
-            interaction: interaction
-        })
+        
+        let queue
+        try {
+            queue = await music.getQueue({
+                interaction: interaction
+            })
+        } catch (error) {
+            return "Queue is empty."
+        }
 
         let response = ``
 
@@ -23,6 +28,10 @@ export default {
             response += `${i}. ${queue[i].info.title} - ${queue[i].info.duration}\n`
         }
 
-        interaction.reply({ content: response})
+        try {
+            await interaction.reply({ content: response})
+        } catch(error) {
+            return "Queue is empty."
+        }
     }
 } as ICommand

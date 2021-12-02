@@ -25,10 +25,14 @@ export default {
         })
         if(!queue[number - 1]) return interaction.reply({ content: "That number of the queue doesn't exist. dumb", ephemeral: true})
 
-        music.removeQueue({
-            interaction: interaction,
-            number: number
-        })
+        try {
+            await music.removeQueue({
+                interaction: interaction,
+                number: number+1
+            })
+        } catch(error) {
+            return "Queue is empty."
+        }
         
         interaction.reply({ content: `Removed the ${number}th song of the queue.`})
     }
