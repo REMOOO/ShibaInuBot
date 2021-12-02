@@ -19,8 +19,8 @@ export default {
 
         let response = ``
 
-        for (let i = 0; i < queue.length; i++) {
-            response += `${i + 1}. ${queue[i].info.title} - ${queue[i].info.duration}\n`
+        for (let i = 1; i < queue.length; i++) {
+            response += `${i}. ${queue[i].info.title} - ${queue[i].info.duration}\n`
         }
 
         interaction.reply({ content: response})

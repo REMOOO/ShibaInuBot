@@ -20,17 +20,21 @@ export default {
 
         if (!isConnected) return interaction.reply({ content: "There are no songs playing, noob.", ephemeral: true})
 
-        const queue = music.getQueue({
+        const queue = await music.getQueue({
             interaction: interaction
         })
 
-        if(number > queue.length) return interaction.reply({ content: "Can't jump that far. ok", ephemeral: true})
+        if(number === queue.length) return interaction.reply({ content: "Can't jump that far. ok", ephemeral: true})
 
-        music.jump({
-            interaction: interaction,
-            number: number
-        })
+        try {
+            await music.jump({
+                interaction: interaction,
+                number: number
+            })
 
-        interaction.reply({ content: "Jump the song to the given queue number."})
+            interaction.reply({ content: "Jumping the song to the given queue number."})
+        } catch {
+            interaction.reply({ content: "Can't jump that far. ok", ephemeral: true})
+        }
     }
 } as ICommand
