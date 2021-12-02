@@ -13,12 +13,12 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ message, interaction }) => {
+    callback: async ({ message, interaction, args }) => {
         let song
         if (!interaction) {
             song = message.content.slice(8)
         } else {
-            song = interaction.options.getString("song")!
+            song = args[0]!
         }
 
         let searches
