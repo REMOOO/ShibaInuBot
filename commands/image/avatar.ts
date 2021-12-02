@@ -4,6 +4,7 @@ import { ICommand } from "wokcommands";
 export default {
     category: 'Image',
     description: 'Get the avatar image of a user.',
+    aliases: ['av', 'pfp'],
 
     slash: 'both',
     
