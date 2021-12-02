@@ -18,6 +18,10 @@ export default {
         })
         if (queue.length === 0) return interaction.reply({ content: "No music is playing.", ephemeral: true})
 
+        interaction.reply({
+            content: "Thank you for stopping this shit."
+        })
+
         music.stop({
             interaction: interaction
         })
