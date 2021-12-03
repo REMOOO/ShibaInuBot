@@ -1,3 +1,4 @@
+import { CacheType, CommandInteraction, Message, TextChannel } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -12,23 +13,42 @@ export default {
     slash: 'both',
 
     callback: async ({ message, interaction, channel, args }) => {
-        const amount = args.length ? parseInt(args.shift()!) : 10
-
-        if (message) {
-            await message.delete()
-        }
-
-        const messages = await channel.messages.fetch({ limit: amount })
-        const { size } = messages
-
-        messages.forEach((message) => message.delete())
-
-        const reply = `Deleted ${size} message(s).`
-
-        if (interaction) {
-            return reply
-        }
-
-        channel.send(reply)
+        purge(interaction, channel, message, args);
     }
 } as ICommand
+
+async function purge(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, args: string[]) {
+    if (!interaction) {
+        if (botHasPermissionsMessage(channel, message)) {
+            await deleteMessages(args, message, channel)
+        }
+    } else {
+        if (botHasPermissionsInteraction(channel, interaction)) {
+            await deleteMessages(args, message, channel)
+        }
+    }
+}
+
+async function deleteMessages(args: string[], message: Message<boolean>, channel: TextChannel) {
+    const amount = args.length ? parseInt(args.shift()!) : 10;
+
+    if (amount < 1) {
+        return "Amount should be higher than 0. pls"
+    }
+
+    if (message) {
+        await message.delete();
+    }
+
+    const messages = await channel.messages.fetch({ limit: amount });
+
+    messages.forEach((message: { delete: () => any; }) => message.delete());
+}
+
+function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
+    return ((channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES")) && (channel.permissionsFor(interaction.guild?.me!).has("MANAGE_MESSAGES")))
+}
+
+function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
+    return ((channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES")) && (channel.permissionsFor(message.guild?.me!).has("MANAGE_MESSAGES")))
+}

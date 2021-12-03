@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 const music = require("@koenie06/discord.js-music")
-import { VoiceChannel } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, Message, TextChannel, VoiceChannel } from "discord.js";
 
 export default {
     category: "Music",
@@ -12,26 +12,40 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ interaction}) => {
+    callback: async ({ interaction, channel, message}) => {
         const song = interaction.options.getString("song") as string
         const member = interaction.guild?.members.cache.get(interaction.member.user.id)
         const voiceChannel = member?.voice.channel as VoiceChannel
 
-        if (!voiceChannel) return interaction.reply({
-            content: "You need to be in a voice channel!",
-            ephemeral: true
-        })
+        reply(voiceChannel, interaction)
 
-        interaction.reply({ content: "Song added", ephemeral: true})
-
-        try {
-            await music.play({
-                interaction: interaction,
-                channel: voiceChannel,
-                song: song
-            })
-        } catch(error) {
-            interaction.channel?.send({ content: `There was no song found with the name/URL '${song}', please try again ${member?.user.username}`})
+        if (botHasPermissionsInteraction(channel, interaction)) {
+            await play(interaction, voiceChannel, song, member)
         }
     }
 } as ICommand
+
+async function play(interaction: CommandInteraction<CacheType>, voiceChannel: VoiceChannel, song: string, member: GuildMember | undefined) {
+    try {
+        await music.play({
+            interaction: interaction,
+            channel: voiceChannel,
+            song: song
+        });
+    } catch (error) {
+        interaction.channel?.send({ content: `There was no song found with the name/URL '${song}', please try again ${member?.user.username}` });
+    }
+}
+
+function reply(voiceChannel: VoiceChannel, interaction: CommandInteraction<CacheType>) {
+    if (!voiceChannel) return interaction.reply({
+        content: "You need to be in a voice channel!",
+        ephemeral: true
+    })
+
+    interaction.reply({ content: "Song added", ephemeral: true})
+}
+
+function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
+    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
+}

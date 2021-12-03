@@ -1,64 +1,16 @@
-import { ButtonInteraction, Interaction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { ButtonInteraction, CacheType, CommandInteraction, GuildMember, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, Role, TextChannel } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Eat the fortune cookie to find your fortune.',
+    description: 'Eat the fortune cookie to find your fortune. Works only as slash command',
 
     slash: true,
     
-    callback: async ({ interaction: msgInt, channel}) => {
-        const row = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setCustomId('fortune_cookie')
-                    .setEmoji('🥠')
-                    .setLabel('Eat cookie')
-                    .setStyle('SUCCESS')
-            )
-            .addComponents(
-                new MessageButton()
-                    .setCustomId('no_fortune_cookie')
-                    .setLabel("I don't like cookie")
-                    .setStyle('DANGER')
-            )
-
-        const embed = new MessageEmbed()
-                .setTitle('Eat your fortune cookie to find your fortune')
-        
-        await msgInt.reply({
-            embeds: [embed],
-            components: [row],
-        })
-
-        const filter = (btnInt: Interaction) => {
-            return msgInt.user.id === btnInt.user.id
+    callback: async ({ interaction: msgInt, channel, interaction}) => {
+        if (botHasPermissionsInteraction(channel, interaction)) {
+            await fortune(msgInt, channel)
         }
-
-        const collector = channel.createMessageComponentCollector({
-            filter,
-            max: 1,
-            time: 1000 * 15
-        })
-
-        collector.on('end', async (collection) => {
-            if (collection.first()?.customId === 'fortune_cookie') {
-                const embed = new MessageEmbed()
-                    .setTitle(getRandomFortune())
-
-                await msgInt.editReply({
-                    embeds: [embed],
-                    components: [],
-                })
-            } else {
-                const embed = new MessageEmbed()
-                    .setTitle('shibe will eat your cookie 🙏')
-                await msgInt.editReply({
-                    embeds: [embed],
-                    components: [],
-                })
-            }
-        })
     },
 } as ICommand
 
@@ -148,7 +100,65 @@ const fortunes = [
     "He likes to flirt, but toward you his intentions are honorable."
 ]
 
+async function fortune(msgInt: CommandInteraction<CacheType>, channel: TextChannel) {
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId('fortune_cookie')
+                .setEmoji('🥠')
+                .setLabel('Eat cookie')
+                .setStyle('SUCCESS')
+        )
+        .addComponents(
+            new MessageButton()
+                .setCustomId('no_fortune_cookie')
+                .setLabel("I don't like cookie")
+                .setStyle('DANGER')
+        );
+
+    const embed = new MessageEmbed()
+        .setTitle('Eat your fortune cookie to find your fortune');
+
+    await msgInt.reply({
+        embeds: [embed],
+        components: [row],
+    });
+
+    const filter = (btnInt: Interaction) => {
+        return msgInt.user.id === btnInt.user.id;
+    };
+
+    const collector = channel.createMessageComponentCollector({
+        filter,
+        max: 1,
+        time: 1000 * 15
+    });
+
+    collector.on('end', async (collection) => {
+        if (collection.first()?.customId === 'fortune_cookie') {
+            const embed = new MessageEmbed()
+                .setTitle(getRandomFortune());
+
+            await msgInt.editReply({
+                embeds: [embed],
+                components: [],
+            });
+        } else {
+            const embed = new MessageEmbed()
+                .setTitle('shibe will eat your cookie 🙏');
+            await msgInt.editReply({
+                embeds: [embed],
+                components: [],
+            });
+        }
+    });
+}
+
 function getRandomFortune() {
     const random = Math.floor(Math.random() * fortunes.length);
     return fortunes[random]
+}
+
+function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
+    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
 }
