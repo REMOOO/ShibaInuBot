@@ -4,7 +4,7 @@ const Canvas = require('canvas')
 
 export default {
     category: 'Image',
-    description: 'Add via 9gag.com logo to an image.',
+    description: 'Add brazzers logo to an image.',
 
     slash: 'both',
 
@@ -15,19 +15,19 @@ export default {
     callback: async ({ channel, message, interaction }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await nineGag(target, interaction, channel, message)
+        await brazzers(target, interaction, channel, message)
     }
 } as ICommand
 
-async function nineGag(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function brazzers(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
     if (!target) {
-        previousNineGags(interaction, channel, message)
+        previousBrazzers(interaction, channel, message)
     } else {
-        await targetNineGags(interaction, channel, message, target)
+        await targetBrazzers(interaction, channel, message, target)
     }
 }
 
-function previousNineGags(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousBrazzers(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
     if (!interaction) {
         if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message)
@@ -50,22 +50,22 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
     const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
     const url = lastMessage?.attachments.first()?.url;
     const image = await Canvas.loadImage(url);
-    const height = 500
-    const width = 500
+    const height = lastMessage?.attachments.first()?.height;
+    const width = lastMessage?.attachments.first()?.width
 
     const canvas = Canvas.createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const ninegag = await Canvas.loadImage("./images/9gag.png");
+    const brazzers = await Canvas.loadImage("./images/brazzers.png");
 
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(ninegag, 0, 0);
+    ctx.drawImage(brazzers, canvas.width - 197, canvas.height - 80, 200, 120);
     return canvas;
 }
 
 function createMessage(canvas: any, message: Message<boolean>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), 'brazzers.png');
 
     message.channel.send({ files: [attachment] });
 }
@@ -81,30 +81,30 @@ async function createInteractionCanvas(messages: Collection<string, Message<bool
     const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
     const url = lastMessage?.attachments.first()?.url;
     const image = await Canvas.loadImage(url);
-    const height = 500;
-    const width = 500
+    const height = lastMessage?.attachments.first()?.height;
+    const width = lastMessage?.attachments.first()?.width;
 
     const canvas = Canvas.createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const ninegag = await Canvas.loadImage("./images/9gag.png");
+    const brazzers = await Canvas.loadImage("./images/brazzers.png");
 
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(ninegag, 0, 0);
+    ctx.drawImage(brazzers, canvas.width - 197, canvas.height - 80, 200, 120);
 
     return canvas;
 }
 
 function createInteraction(canvas: any, interaction: CommandInteraction<CacheType>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), 'brazzers.png');
 
     interaction.reply({
         files: [attachment]
     });
 }
 
-async function targetNineGags(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
+async function targetBrazzers(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
     if (!interaction) {
         if (botHasPermissionsMessage(channel, message)) {
             const canvas = await createTargetCanvas(target)
@@ -129,16 +129,16 @@ async function createTargetCanvas(target: GuildMember) {
     const canvas = Canvas.createCanvas(500, 500);
     const ctx = canvas.getContext('2d');
 
-    const ninegag = await Canvas.loadImage("./images/9gag.png");
+    const brazzers = await Canvas.loadImage("./images/brazzers.png");
 
     ctx.drawImage(avatar, 0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(ninegag, 0, 0);
+    ctx.drawImage(brazzers, canvas.width - 197, canvas.height - 80, 200, 120);
     return canvas;
 }
 
 function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), 'brazzers.png');
 
     if (!interaction) {
         message.channel.send({ files: [attachment] });
