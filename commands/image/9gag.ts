@@ -4,7 +4,7 @@ const Canvas = require('canvas')
 
 export default {
     category: 'Image',
-    description: 'Transform an image to a 3DS box cover art.',
+    description: 'Add via 9gag.com logo',
 
     slash: 'both',
 
@@ -15,19 +15,19 @@ export default {
     callback: async ({ channel, message, interaction }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await threeDs(target, interaction, channel, message)
+        await nineGag(target, interaction, channel, message)
     }
 } as ICommand
 
-async function threeDs(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function nineGag(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
     if (!target) {
-        previousThreeDs(interaction, channel, message)
+        previousNineGags(interaction, channel, message)
     } else {
-        await targetThreeDs(interaction, channel, message, target)
+        await targetNineGags(interaction, channel, message, target)
     }
 }
 
-function previousThreeDs(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousNineGags(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
     if (!interaction) {
         if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message)
@@ -50,25 +50,22 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
     const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
     const url = lastMessage?.attachments.first()?.url;
     const image = await Canvas.loadImage(url);
-    const height = 754
-    const width = 820
+    const height = 500
+    const width = 500
 
     const canvas = Canvas.createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const threeds = await Canvas.loadImage("./images/3ds.png");
-    const e = await Canvas.loadImage("./images/e_for_everyone.png")
-    const nintendo = await Canvas.loadImage("./images/nintendo_logo.png")
+    const ninegag = await Canvas.loadImage("./images/9gag.png");
 
-    ctx.drawImage(threeds, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 13, 41, 710, 695);
-    ctx.drawImage(e, 20, 571, 135, 150)
-    ctx.drawImage(nintendo, 500, 650, 200, 100)
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(ninegag, 0, 0);
     return canvas;
 }
 
 function createMessage(canvas: any, message: Message<boolean>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '3ds.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
 
     message.channel.send({ files: [attachment] });
 }
@@ -84,32 +81,30 @@ async function createInteractionCanvas(messages: Collection<string, Message<bool
     const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
     const url = lastMessage?.attachments.first()?.url;
     const image = await Canvas.loadImage(url);
-    const height = 754
-    const width = 820
+    const height = 500;
+    const width = 500
 
     const canvas = Canvas.createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const threeds = await Canvas.loadImage("./images/3ds.png");
-    const e = await Canvas.loadImage("./images/e_for_everyone.png")
-    const nintendo = await Canvas.loadImage("./images/nintendo_logo.png")
+    const ninegag = await Canvas.loadImage("./images/9gag.png");
 
-    ctx.drawImage(threeds, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 13, 41, 710, 695);
-    ctx.drawImage(e, 20, 571, 135, 150)
-    ctx.drawImage(nintendo, 500, 650, 200, 100)
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(ninegag, 0, 0);
+
     return canvas;
 }
 
 function createInteraction(canvas: any, interaction: CommandInteraction<CacheType>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '3ds.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
 
     interaction.reply({
         files: [attachment]
     });
 }
 
-async function targetThreeDs(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
+async function targetNineGags(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
     if (!interaction) {
         if (botHasPermissionsMessage(channel, message)) {
             const canvas = await createTargetCanvas(target)
@@ -131,22 +126,19 @@ async function createTargetCanvas(target: GuildMember) {
         })
     );
 
-    const canvas = Canvas.createCanvas(820, 754);
+    const canvas = Canvas.createCanvas(500, 500);
     const ctx = canvas.getContext('2d');
 
-    const threeds = await Canvas.loadImage("./images/3ds.png");
-    const e = await Canvas.loadImage("./images/e_for_everyone.png")
-    const nintendo = await Canvas.loadImage("./images/nintendo_logo.png")
+    const ninegag = await Canvas.loadImage("./images/9gag.png");
 
-    ctx.drawImage(threeds, 0, 0, canvas.width, canvas.height);
-    ctx.drawImage(avatar, 13, 41, 710, 695);
-    ctx.drawImage(e, 20, 571, 135, 150)
-    ctx.drawImage(nintendo, 500, 650, 200, 100)
+    ctx.drawImage(avatar, 0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(ninegag, 0, 0);
     return canvas;
 }
 
 function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
-    const attachment = new MessageAttachment(canvas.toBuffer(), '3ds.png');
+    const attachment = new MessageAttachment(canvas.toBuffer(), '9gag.png');
 
     if (!interaction) {
         message.channel.send({ files: [attachment] });
