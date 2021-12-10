@@ -28,12 +28,20 @@ client.on('ready', () => {
         typeScript: true,
         testServers: '914555144039972944',
         botOwners: '267411432339931137',
+        mongoUri: process.env.MONGO,
+        dbOptions: {
+            keepAlive: true
+        }
     })
         .setDefaultPrefix('$')
         .setCategorySettings([
             {
                 name: 'Text',
                 emoji: '👩‍💻'
+            },
+            {
+                name: 'Cryptocurrency',
+                emoji: '💰'
             },
             {
                 name: 'Image',
