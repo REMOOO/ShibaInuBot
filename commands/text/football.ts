@@ -4,7 +4,7 @@ const fetch = require('axios')
 
 export default {
     category: 'Text',
-    description: "Show upcoming football matches",
+    description: "Show upcoming football matches.",
 
     slash: 'both',
 

@@ -4,35 +4,35 @@ const fetch = require('axios')
 
 export default {
     category: 'Text',
-    description: "Show the weather of a location.",
+    description: "Get information of an IP address.",
 
     slash: 'both',
 
-    expectedArgs: '<location>',
+    expectedArgs: '<ip>',
     minArgs: 1,
     maxArgs: 1,
 
     callback: async ({ args, interaction, channel, message }) => {
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
-                return weather(args)
+                return ip(args)
             }
         } else {
             if (botHasPermissionsInteraction(channel, interaction)) {
-                return weather(args)
+                return ip(args)
             }
         }
     }
 } as ICommand
 
-async function weather(args: any[]) {
-    const location = args[0]
+async function ip(args: any[]) {
+    const ip = args[0]
     let res
 
     try {
-        res = await fetch(`http://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER}&q=${location}`)
+        res = await fetch(`http://api.weatherapi.com/v1/ip.json?key=${process.env.WEATHER}&q=${ip}`)
     } catch (err) {
-        return "Location doesn't exist"
+        return "IP doesn't exist"
     }
 
     const data = res.data
@@ -48,27 +48,22 @@ async function weather(args: any[]) {
 }
 
 async function isRegionMissing(data: any, region: string) {
-    if (data.location.region === "") {
-        region = await data.location.name;
+    if (data.region === "") {
+        region = await data.city;
     } else {
-        region = await data.location.region;
+        region = await data.region;
     }
     return region;
 }
 
 function createEmbed(data: any, region: string) {
     const embed = new MessageEmbed()
-        .setTitle(`Weather in ${data.location.name}`)
-        .setImage(`https:${data.current.condition.icon}`)
-        .addField(`Region`, `${region}`, true)
-        .addField(`Country`, `${data.location.country}`, true)
-        .addField(`Local time`, `${data.location.localtime}`, true)
-        .addField("Temperature", `${data.current.temp_c} °C - ${data.current.temp_f} °F`, true)
-        .addField("Feels like", `${data.current.feelslike_c} °C - ${data.current.feelslike_f} °F`, true)
-        .addField("Condition", `${data.current.condition.text}`, true)
-        .addField("Wind speed", `${data.current.wind_kph} kph - ${data.current.wind_mph} mph`, true)
-        .addField("Wind direction", `${data.current.wind_dir}`, true)
-        .addField("Last updated", `${data.current.last_updated}`, true)
+        .setTitle(`Information of IP: ${data.ip}`)
+        .addField(`Continent`, `${data.continent_name}`, true)
+        .addField(`Country`, `${data.country_name}`, true)
+        .addField(`City`, `${data.city}`, true)
+        .addField("Region", `${region}`, true)
+        .addField("Local time", `${data.localtime}`, true)
         .setColor("RANDOM");
     return embed;
 }

@@ -4,7 +4,7 @@ const fetch = require('axios')
 
 export default {
     category: 'Text',
-    description: "Show the astronomy of a location",
+    description: "Show the astronomy of a location.",
 
     slash: 'both',
 
