@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
 export default {
-    category: 'Text',
+    category: 'Cryptocurrency',
     description: "Convert currency to another. Example: SHIB to USD",
 
     slash: 'both',

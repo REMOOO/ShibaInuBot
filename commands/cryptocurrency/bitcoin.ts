@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
 export default {
-    category: 'Text',
+    category: 'Cryptocurrency',
     description: "Compare Bitcoin to dollars.",
 
     slash: 'both',
