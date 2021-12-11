@@ -10,16 +10,17 @@ export default {
 
     slash: true,
 
-    expectedArgs: '<prize> <winnersCount> <time>',
-    expectedArgsTypes: ['STRING', 'INTEGER', 'STRING'],
-    minArgs: 3,
-    maxArgs: 3,
+    expectedArgs: '<prize> <winnersCount> <time> <enableWinInARow>',
+    expectedArgsTypes: ['STRING', 'INTEGER', 'STRING', 'BOOLEAN'],
+    minArgs: 4,
+    maxArgs: 4,
 
     callback: async ({ guild, args, channel, interaction }) => {
         if (botHasPermissionsInteraction(channel, interaction)) {
             const prize = args[0]
             const winnersCount = args[1]
             const time = args[2]
+            const winInARow = args[3]
             let entrants = 0
 
             const timeMs = await ms(time)
@@ -79,7 +80,7 @@ export default {
                         content: "You've already entered the giveaway!",
                         ephemeral: true
                     })
-                } else if (db.winners.includes(button.user.id)) {
+                } else if (db.winners.includes(button.user.id) && winInARow == "false") {
                     await button.reply({
                         content: "You've already won the previous giveaway!",
                         ephemeral: true
@@ -127,7 +128,7 @@ export default {
 
                     db.isBusy = false
                     db.save()
-                    
+
                     await giveawayinteraction?.edit({
                         embeds: [embed],
                         components: [endRow]
