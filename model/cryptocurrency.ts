@@ -19,6 +19,10 @@ const schema = new Schema({
     bitCoins: {
         type: Number,
         default: 0
+    },
+
+    daily: {
+        type: Number
     }
 })
 
