@@ -50,12 +50,24 @@ async function balance(target: GuildMember | undefined, message: Message<boolean
     }
 }
 
-function createEmbed(user: User, data: any) {
+async function createEmbed(user: User, data: any) {
+    const dollar = await checkComma(data.dollars)
+    const shibacoin = await checkComma(data.shibaInuCoins)
+    const bitcoin = await checkComma(data.bitCoins)
+
     const embed = new MessageEmbed()
         .setTitle(`Balance of ${user.username}`)
-        .setDescription(`**Dollars:** $${data.dollars}\n**Shiba Inu coins:** ${data.shibaInuCoins} SHIB\n**Bitcoins:** ${data.bitCoins} BTC`)
+        .setDescription(`**Dollars:** $${dollar}\n**Shiba Inu coins:** ${shibacoin} SHIB\n**Bitcoins:** ${bitcoin} BTC`)
         .setColor("RANDOM");
     return embed;
+}
+
+function checkComma(coin: any) {
+    if (coin.toString().substr(0,2) === "0.") {
+        return coin
+    } else {
+        return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }
 
 function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
