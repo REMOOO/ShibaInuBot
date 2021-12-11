@@ -6,7 +6,7 @@ const fetch = require('axios')
 export default {
     category: 'Cryptocurrency',
     description: "Sell Shiba Inu coins for dollars.",
-    aliases: ['sellshibacoin', 'sellshibainucoin'],
+    aliases: ['sellshibacoin', 'sellshibainucoin', 'sellshib'],
 
     slash: 'both',
 

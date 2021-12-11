@@ -5,32 +5,32 @@ const fetch = require('axios')
 
 export default {
     category: 'Cryptocurrency',
-    description: "Buy Shiba Inu coins for dollars.",
-    aliases: ['buyshibacoin', 'buyshibainucoin', 'buyshib'],
+    description: "Sell Bitcoins for dollars.",
+    aliases: ['sellbtc'],
 
     slash: 'both',
 
     minArgs: 1,
     maxArgs: 1,
-    expectedArgs: '<dollars>',
+    expectedArgs: '<bitcoins>',
     expectedArgsTypes: ['NUMBER'],
 
     callback: async ({ args, interaction, channel, message }) => {
-        const dollars = Number(args[0])
+        const bitcoins = Number(args[0])
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
-                return buyshiba(dollars, message, interaction)
+                return sellbitcoins(bitcoins, message, interaction)
             }
         } else {
             if (botHasPermissionsInteraction(channel, interaction)) {
-                return buyshiba(dollars, message, interaction)
+                return sellbitcoins(bitcoins, message, interaction)
             }
         }
     }
 } as ICommand
 
-async function buyshiba(dollars: number, message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
+async function sellbitcoins(bitcoins: number, message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
     let user = message?.author
     if (!user) user = interaction?.user
 
@@ -38,7 +38,7 @@ async function buyshiba(dollars: number, message: Message<boolean>, interaction:
     let db
 
     try {
-        res = await fetch(`https://min-api.cryptocompare.com/data/price?fsym=USD&tsyms=SHIB`)
+        res = await fetch(`https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD`)
         db = await crypto.findOne({ userId: user.id })
         if (!db) db = await crypto.create({ userId: user.id })
     } catch (err) {
@@ -46,34 +46,34 @@ async function buyshiba(dollars: number, message: Message<boolean>, interaction:
         return "Error"
     }
 
-    const shiba = res.data.SHIB
-    const shibacoins = dollars * shiba
+    const usd = res.data.USD
+    const dollars = bitcoins * usd
 
-    if (db.dollars >= dollars && dollars > 0) {
-        db.dollars -= dollars
-        db.shibaInuCoins += shibacoins
+    if (db.bitCoins >= bitcoins && bitcoins > 0) {
+        db.bitCoins -= bitcoins
+        db.dollars += dollars
         db.save()
     } else {
-        return "Dollars invalid."
+        return "Bitcoins invalid."
     }
 
     try {
-        return createEmbed(db, shibacoins, dollars);
+        return createEmbed(db, dollars, bitcoins);
     } catch (err) {
         console.log(err)
-        return "Buyshiba error. Please report this in the support server if you want this to be fixed :)."
+        return "Buybitcoin error. Please report this in the support server if you want this to be fixed :)."
     }
 }
 
-async function createEmbed(db: any, shibacoins: number, dollars: number) {
+async function createEmbed(db: any, dollars: number, bitcoins: number) {
     const dollar = await checkComma(db.dollars)
     const shibacoin = await checkComma(db.shibaInuCoins)
     const bitcoin = await checkComma(db.bitCoins)
-    const shibacoinsComma = await checkComma(shibacoins)
+    const bitcoinsComma = await checkComma(bitcoins)
     const dollarsComma = await checkComma(dollars)
 
     const embed = new MessageEmbed()
-        .setTitle(`You bought ${shibacoinsComma} SHIB for $${dollarsComma}`)
+        .setTitle(`You sold ${bitcoinsComma} BTC for $${dollarsComma}`)
         .setDescription(`\n**__You now have__**\n**Dollars:** $${dollar}\n**Shiba Inu coins:** ${shibacoin} SHIB\n**Bitcoins:** ${bitcoin} BTC`)
         .setColor("RANDOM");
     return embed;
