@@ -57,7 +57,7 @@ async function createEmbed(user: User, data: any) {
 
     const embed = new MessageEmbed()
         .setTitle(`Balance of ${user.username}`)
-        .setDescription(`**Dollars:** $${dollar}\n**Shiba Inu coins:** ${shibacoin} SHIB\n**Bitcoins:** ${bitcoin} BTC`)
+        .setDescription(`**Dollars:** $${parseFloat(dollar).toFixed(2)}\n**Shiba Inu coins:** ${shibacoin} SHIB\n**Bitcoins:** ${bitcoin} BTC`)
         .setColor("RANDOM");
     return embed;
 }
