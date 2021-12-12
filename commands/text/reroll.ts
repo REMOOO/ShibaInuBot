@@ -1,7 +1,6 @@
 import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, MessageButton, MessageActionRow, Interaction, MessageComponentInteraction } from "discord.js";
 import { ICommand } from "wokcommands";
 import giveawaydb from '../../model/giveaway'
-const ms = require('ms')
 
 export default {
     category: 'Text',
