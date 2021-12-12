@@ -28,7 +28,7 @@ export default {
             const timeCalculated = timeNow + timeMs
             const date = new Date(timeCalculated)
 
-            let db: { isBusy: boolean; end: Date; save: () => void; winners: string | string[]; }
+            let db: { isBusy: boolean; end: Date; save: () => void; winners: string | string[]; entrants: string[]; }
             db = await giveawaydb.findOne({ guildId: guild!.id, channelId: channel.id })
             if (db) {
                 if (db.isBusy) {
@@ -88,6 +88,8 @@ export default {
                 } else {
                     entrantsArray.push(button.user.id)
                     entrants += 1
+                    db.entrants = entrantsArray
+                    db.save()
 
                     const updatedRow = new MessageActionRow()
                         .addComponents(

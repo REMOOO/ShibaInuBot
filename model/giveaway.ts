@@ -16,6 +16,11 @@ const schema = new Schema({
         default: []
     },
 
+    entrants: {
+        type: Array,
+        default: []
+    },
+
     end: {
         type: Date,
         required: true
