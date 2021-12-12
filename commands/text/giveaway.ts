@@ -28,18 +28,19 @@ export default {
             const timeCalculated = timeNow + timeMs
             const date = new Date(timeCalculated)
 
-            let db: { isBusy: boolean; end: Date; save: () => void; winners: string | string[]; entrants: string[]; }
+            let db: { isBusy: boolean; prize: string; end: Date; save: () => void; winners: string | string[]; entrants: string[]; }
             db = await giveawaydb.findOne({ guildId: guild!.id, channelId: channel.id })
             if (db) {
                 if (db.isBusy) {
                     return "There's already a giveaway atm."
                 } else {
+                    db.prize = prize
                     db.end = date
                     db.isBusy = true
                     db.save()
                 }
             } else {
-                db = await giveawaydb.create({ guildId: guild!.id, channelId: channel.id, end: date, isBusy: true })
+                db = await giveawaydb.create({ guildId: guild!.id, channelId: channel.id, prize: prize, end: date, isBusy: true })
             }
 
             const row = new MessageActionRow()

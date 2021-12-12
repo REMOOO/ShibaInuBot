@@ -11,6 +11,11 @@ const schema = new Schema({
         required: true
     },
 
+    prize: {
+        type: String,
+        required: true
+    },
+
     winners: {
         type: Array,
         default: []
