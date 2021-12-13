@@ -2,6 +2,8 @@ import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } fro
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 const ms = require('parse-ms-js');
+const Topgg = require(`@top-gg/sdk`)
+const api = new Topgg.Api(process.env.TOPGG)
 
 export default {
     category: 'Cryptocurrency',
@@ -27,6 +29,15 @@ async function daily(message: Message<boolean>, interaction: CommandInteraction<
     let user = message?.author
     if (!user) user = interaction?.user
 
+    const voted = await api.hasVoted(user.id)
+
+    if (!voted) {
+        const embed = new MessageEmbed()
+            .setTitle("You have not voted yet for a daily reward.")
+            .setDescription("**[Vote here for a daily reward!](https://top.gg/bot/914195557529047120/vote)**")
+        return embed
+    }
+
     let db
 
     try {
@@ -38,9 +49,9 @@ async function daily(message: Message<boolean>, interaction: CommandInteraction<
     }
 
     let timeout = 86400000
-    let randomAmount = Math.floor(Math.random() * 100) + 100
+    let randomAmount = Math.floor(Math.random() * 4000) + 1000
 
-    if(timeout - (Date.now() - db.daily) > 0) {
+    if (timeout - (Date.now() - db.daily) > 0) {
         let timeleft = ms(timeout - (Date.now() - db.daily))
         return `You already claimed your daily gift.\nTry again after ${timeleft.hours} hours, ${timeleft.minutes} minutes and ${timeleft.seconds} seconds`
     }
@@ -70,7 +81,7 @@ async function createEmbed(db: any, randomAmount: number) {
 }
 
 function checkComma(coin: any) {
-    if (coin.toString().substr(0,2) === "0.") {
+    if (coin.toString().substr(0, 2) === "0.") {
         return coin
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
