@@ -8,11 +8,16 @@ export default {
     permissions: ['ADMINISTRATOR'],
     
     minArgs: 1,
-    expectedArgs: '[amount]',
+    maxArgs: 1,
+    expectedArgs: '<amount>',
+    expectedArgsTypes: ['INTEGER'],
 
     slash: 'both',
 
     callback: async ({ message, interaction, channel, args }) => {
+        if (parseInt(args[0]) > 100) {
+            return "Value should be less than or equal to 100."
+        }
         purge(interaction, channel, message, args);
     }
 } as ICommand
