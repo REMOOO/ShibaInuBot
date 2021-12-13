@@ -1,15 +1,21 @@
-import { ButtonInteraction, CacheType, CommandInteraction, GuildMember, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, Role, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
-    description: 'Eat the fortune cookie to find your fortune. Works only as slash command',
+    description: 'Eat the fortune cookie to find your fortune.',
 
-    slash: true,
+    slash: 'both',
     
-    callback: async ({ interaction: msgInt, channel, interaction}) => {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            await fortune(msgInt, channel)
+    callback: async ({ message: msg, interaction: msgInt, channel}) => {
+        if(!msgInt) {
+            if (botHasPermissionsMessage(channel, msg)) {
+                await fortuneMsg(msg, channel)
+            }
+        } else {
+            if (botHasPermissionsInteraction(channel, msgInt)) {
+                await fortuneInt(msgInt, channel)
+            }
         }
     },
 } as ICommand
@@ -100,7 +106,7 @@ const fortunes = [
     "He likes to flirt, but toward you his intentions are honorable."
 ]
 
-async function fortune(msgInt: CommandInteraction<CacheType>, channel: TextChannel) {
+async function fortuneMsg(msg: Message<boolean>, channel: TextChannel) {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -117,7 +123,65 @@ async function fortune(msgInt: CommandInteraction<CacheType>, channel: TextChann
         );
 
     const embed = new MessageEmbed()
-        .setTitle('Eat your fortune cookie to find your fortune');
+        .setTitle('Eat your fortune cookie to find your fortune')
+        .setColor('RANDOM')
+
+    const botMsg = await msg.reply({
+        embeds: [embed],
+        components: [row],
+    });
+
+    const filter = (btnInt: Interaction) => {
+        return msg.author.id === btnInt.user.id;
+    };
+
+    const collector = channel.createMessageComponentCollector({
+        filter,
+        max: 1,
+        time: 1000 * 15
+    });
+
+    collector.on('end', async (collection) => {
+        if (collection.first()?.customId === 'fortune_cookie') {
+            const embed = new MessageEmbed()
+                .setTitle(getRandomFortune())
+                .setColor('RANDOM')
+
+            await botMsg.edit({
+                embeds: [embed],
+                components: [],
+            });
+        } else {
+            const embed = new MessageEmbed()
+                .setTitle('shibe will eat your cookie 🙏')
+                .setColor('RANDOM')
+            await botMsg.edit({
+                embeds: [embed],
+                components: [],
+            });
+        }
+    });
+}
+
+async function fortuneInt(msgInt: CommandInteraction<CacheType>, channel: TextChannel) {
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId('fortune_cookie')
+                .setEmoji('🥠')
+                .setLabel('Eat cookie')
+                .setStyle('SUCCESS')
+        )
+        .addComponents(
+            new MessageButton()
+                .setCustomId('no_fortune_cookie')
+                .setLabel("I don't like cookie")
+                .setStyle('DANGER')
+        );
+
+    const embed = new MessageEmbed()
+        .setTitle('Eat your fortune cookie to find your fortune')
+        .setColor('RANDOM')
 
     await msgInt.reply({
         embeds: [embed],
@@ -137,7 +201,8 @@ async function fortune(msgInt: CommandInteraction<CacheType>, channel: TextChann
     collector.on('end', async (collection) => {
         if (collection.first()?.customId === 'fortune_cookie') {
             const embed = new MessageEmbed()
-                .setTitle(getRandomFortune());
+                .setTitle(getRandomFortune())
+                .setColor('RANDOM')
 
             await msgInt.editReply({
                 embeds: [embed],
@@ -145,7 +210,8 @@ async function fortune(msgInt: CommandInteraction<CacheType>, channel: TextChann
             });
         } else {
             const embed = new MessageEmbed()
-                .setTitle('shibe will eat your cookie 🙏');
+                .setTitle('shibe will eat your cookie 🙏')
+                .setColor('RANDOM')
             await msgInt.editReply({
                 embeds: [embed],
                 components: [],
@@ -161,4 +227,8 @@ function getRandomFortune() {
 
 function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
     return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
+}
+
+function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
+    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }
