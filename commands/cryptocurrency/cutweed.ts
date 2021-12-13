@@ -95,7 +95,7 @@ async function cutweedMsg(channel: TextChannel, msg: Message<boolean>) {
             const weed = weedbags * 5
 
             db.weed -= weed
-            db.weedBags = weedbags
+            db.weedBags += weedbags
             db.busyWeed = false
             db.save()
 
@@ -195,7 +195,7 @@ async function cutweedInt(channel: TextChannel, msgInt: CommandInteraction<Cache
             const weed = weedbags * 5
 
             db.weed -= weed
-            db.weedBags = weedbags
+            db.weedBags += weedbags
             db.busyWeed = false
             db.save()
 

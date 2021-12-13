@@ -107,7 +107,7 @@ async function createDollarEmbed(guild: Guild | null) {
             i++;
         }
         else if (guild?.members.cache.has(dollardb[i].userId)) {
-            richestInDollars += `${i + 1}. **$${parseFloat(await checkComma(dollardb[i].dollars)).toFixed(2)}** - <@${dollardb[i].userId}>\n`;
+            richestInDollars += `${i + 1}. **$${await checkComma(dollardb[i].dollars.toFixed(2))}** - <@${dollardb[i].userId}>\n`;
         } else {
             if (lastUser = dollardb[i].userId) {
                 i++;

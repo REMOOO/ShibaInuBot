@@ -4,33 +4,26 @@ import crypto from '../../model/cryptocurrency'
 
 export default {
     category: 'Cryptocurrency',
-    description: "Get the balance of a user.",
-    aliases: ['bal'],
+    description: "Check your inventory.",
+    aliases: ['inv'],
 
     slash: 'both',
 
-    maxArgs: 1,
-    expectedArgs: '<user>',
-    expectedArgsTypes: ['USER'],
-
     callback: async ({ interaction, channel, message }) => {
-        const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
-                return balance(target, message, interaction)
+                return inventory(message, interaction)
             }
         } else {
             if (botHasPermissionsInteraction(channel, interaction)) {
-                return balance(target, message, interaction)
+                return inventory(message, interaction)
             }
         }
     }
 } as ICommand
 
-async function balance(target: GuildMember | undefined, message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
-    let user = target?.user!
-    if(!user) user = message?.author
+async function inventory(message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
+    let  user = message?.author
     if (!user) user = interaction?.user
     let data
 
@@ -46,29 +39,21 @@ async function balance(target: GuildMember | undefined, message: Message<boolean
     try {
         return createEmbed(user, data);
     } catch (err) {
-        return "Balance error. Please report this in the support server if you want this to be fixed :)."
+        return "Inventory error. Please report this in the support server if you want this to be fixed :)."
     }
 }
 
 async function createEmbed(user: User, data: any) {
-    const dollar = await checkComma(data.dollars.toFixed(2))
-    const shibacoin = await checkComma(data.shibaInuCoins)
-    const bitcoin = await checkComma(data.bitCoins)
+    const weed = data.weed
+    const weedBags = data.weedBags
 
     const embed = new MessageEmbed()
-        .setTitle(`Balance of ${user.username}`)
-        .setDescription(`**Dollars:** $${dollar}\n**Shiba Inu coins:** ${shibacoin} SHIB\n**Bitcoins:** ${bitcoin} BTC`)
+        .setTitle(`Inventory of ${user.username}`)
+        .setDescription(`**Weed:** ${weed}\n**Weed bags:** ${weedBags}`)
         .setColor("RANDOM");
     return embed;
 }
 
-function checkComma(coin: any) {
-    if (coin.toString().substr(0,2) === "0.") {
-        return coin
-    } else {
-        return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-}
 
 function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
     return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
