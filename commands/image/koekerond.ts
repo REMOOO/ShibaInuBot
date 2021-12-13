@@ -61,12 +61,10 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
     ctx.drawImage(koekerond, 0, 0, canvas.width, canvas.height)
 
     ctx.beginPath()
-    ctx.arc(200, 185, 155, 0, Math.PI * 2, true)
+    ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
 	ctx.closePath()
 	ctx.clip()
-    ctx.globalAlpha = 0.6
-    ctx.drawImage(image, 25, 25, 400, 400)
-
+    ctx.drawImage(image, 100, 85, 200, 200)
     return canvas;
 }
 
@@ -98,11 +96,10 @@ async function createInteractionCanvas(messages: Collection<string, Message<bool
     ctx.drawImage(koekerond, 0, 0, canvas.width, canvas.height)
 
     ctx.beginPath()
-    ctx.arc(200, 185, 155, 0, Math.PI * 2, true)
+    ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
 	ctx.closePath()
 	ctx.clip()
-    ctx.globalAlpha = 0.6
-    ctx.drawImage(image, 25, 25, 400, 400)
+    ctx.drawImage(image, 100, 85, 200, 200)
     return canvas;
 }
 
@@ -144,11 +141,10 @@ async function createTargetCanvas(target: GuildMember) {
     ctx.drawImage(koekerond, 0, 0, canvas.width, canvas.height)
 
     ctx.beginPath()
-    ctx.arc(200, 185, 155, 0, Math.PI * 2, true)
+    ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
 	ctx.closePath()
 	ctx.clip()
-    ctx.globalAlpha = 0.6
-    ctx.drawImage(avatar, 25, 25, 400, 400)
+    ctx.drawImage(avatar, 100, 85, 200, 200)
     return canvas;
 }
 
