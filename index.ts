@@ -57,11 +57,11 @@ client.on('ready', () => {
             }
         ])
     
-    music.event.on('playSong', (channel: { send: (arg0: { content: string }) => void }, songInfo: { title: any, duration: any, url: any }, requester: { tag: any }) => {
+    music.event.on('playSong', async (channel: { send: (arg0: { content: string }) => void }, songInfo: { title: any, duration: any, url: any }, requester: { tag: any }) => {
         channel.send({ content: `Now playing: **${songInfo.title}**\nRequested by \`${requester.tag}\`\nDuration: ${songInfo.duration}\n(${songInfo.url})`})
     })
 
-    music.event.on('addSong', (channel: { send: (arg0: { content: string }) => void }, songInfo: { title: any; duration: any; url: any }, requester: { tag: any }) => {
+    music.event.on('addSong', async (channel: { send: (arg0: { content: string }) => void }, songInfo: { title: any; duration: any; url: any }, requester: { tag: any }) => {
         channel.send({ content: `Added the song: **${songInfo.title}**\nRequested by \`${requester.tag}\`\nDuration: ${songInfo.duration}\n(${songInfo.url})`})
     })
 
@@ -77,8 +77,13 @@ client.on('ready', () => {
         })
     })
 
-    music.event.on('finish', (channel: { send: (arg0: { content: string }) => void }) => {
-        channel.send({ content: "All music has been played, bye." })
+    music.event.on('finish', async (channel: { send: (arg0: { content: string }) => void }) => {
+        try {
+            channel.send({ content: "All music has been played, bye." })
+        } catch(err) {
+            console.log(err)
+            return "Music finish error. Please report this ty"
+        }
     })
 })
 
