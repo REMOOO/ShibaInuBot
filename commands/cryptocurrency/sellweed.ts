@@ -236,7 +236,7 @@ async function sellweedInt(channel: TextChannel, msgInt: CommandInteraction<Cach
                     components: [],
                 });
             } else {
-                const profit = weedbags * 309
+                const profit = weedbags * 329
 
                 db.weedBags -= weedbags
                 db.dollars += profit
