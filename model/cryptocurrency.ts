@@ -26,7 +26,7 @@ const schema = new Schema({
         default: 0
     },
 
-    busyHarvesting: {
+    busyWeed: {
         type: Boolean,
         default: false
     },
@@ -34,16 +34,6 @@ const schema = new Schema({
     weedBags: {
         type: Number,
         default: 0
-    },
-
-    busyCutting: {
-        type: Boolean,
-        default: false
-    },
-
-    busySellingWeed: {
-        type: Boolean,
-        default: false
     },
 
     daily: {

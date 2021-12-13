@@ -4,8 +4,8 @@ import crypto from '../../model/cryptocurrency'
 
 export default {
     category: 'Cryptocurrency',
-    description: "Harvest some weed.",
-    aliases: ['pickweed', 'farmweed'],
+    description: "Cut some weed. You must have some weed already.",
+    aliases: ['packweed'],
 
     slash: 'both',
 
@@ -13,20 +13,20 @@ export default {
 
         if (!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {
-                return harvestweedMsg(channel, msg)
+                return cutweedMsg(channel, msg)
             }
         } else {
             if (botHasPermissionsInteraction(channel, msgInt)) {
-                return harvestweedInt(channel, msgInt)
+                return cutweedInt(channel, msgInt)
             }
         }
     }
 } as ICommand
 
-async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
+async function cutweedMsg(channel: TextChannel, msg: Message<boolean>) {
     let user = msg.author
 
-    let db: { weed: number; weedBags: any; busyWeed: boolean; save: () => void; }
+    let db: { weed: number; busyWeed: boolean; save: () => void; weedBags: number; }
 
     try {
         db = await crypto.findOne({ userId: user.id })
@@ -36,8 +36,8 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
         return "Error"
     }
 
-    if (db.weed + db.weedBags >= 60) {
-        return "Inventory full."
+    if (db.weed < 5) {
+        return "You don't have enough weed."
     }
 
     if (db.busyWeed === true) {
@@ -50,14 +50,14 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('harvest_weed')
-                .setEmoji('🌿')
-                .setLabel('Harvest weed')
+                .setCustomId('cut_weed')
+                .setEmoji('🔪')
+                .setLabel('Cut weed')
                 .setStyle('SUCCESS')
         )
 
     const embed = new MessageEmbed()
-        .setTitle('Harvest some weed')
+        .setTitle('Cut some weed')
         .setColor('RANDOM')
 
     const botMsg = await msg.reply({
@@ -74,12 +74,15 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
         time: 1000 * 15
     });
 
+    const weedbags = ~~(db.weed/5)
+
     collector.on('collect', async (button) => {
         const embed = new MessageEmbed()
-            .setTitle(`${button.user.username} is harvesting some weed...`)
+            .setTitle(`${button.user.username} is cutting some weed...`)
+            .setDescription("The more weed you have, the longer it takes.")
             .setColor('RANDOM')
 
-        collector.resetTimer({ time: 10000 })
+        collector.resetTimer({ time: 1000 * (weedbags * 5) })
 
         await botMsg.edit({
             embeds: [embed],
@@ -88,15 +91,16 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
     })
 
     collector.on('end', async (collection) => {
-        if (collection.first()?.customId === 'harvest_weed') {
-            const randomAmount = Math.floor(Math.random() * 3) + 1
+        if (collection.first()?.customId === 'cut_weed') {
+            const weed = weedbags * 5
 
-            db.weed += randomAmount
+            db.weed -= weed
+            db.weedBags = weedbags
             db.busyWeed = false
             db.save()
 
             const embed = new MessageEmbed()
-                .setTitle(`${msg.author.username} has harvested ${randomAmount} weed`)
+                .setTitle(`${msg.author.username} has cut ${weed} weed and packed ${weedbags} weed bags`)
                 .setColor('RANDOM')
 
             await botMsg.edit({
@@ -105,7 +109,7 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
             });
         } else {
             const embed = new MessageEmbed()
-                .setTitle('You waited too long, the weed has expired')
+                .setTitle('You waited too long, the cutting session has expired')
                 .setColor('RANDOM')
 
             db.busyWeed = false
@@ -119,10 +123,10 @@ async function harvestweedMsg(channel: TextChannel, msg: Message<boolean>) {
     });
 }
 
-async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<CacheType>) {
+async function cutweedInt(channel: TextChannel, msgInt: CommandInteraction<CacheType>) {
     let user = msgInt.user
 
-    let db: { weed: number; weedBags: any; busyWeed: boolean; save: () => void; }
+    let db: { weed: number; busyWeed: boolean; save: () => void; weedBags: number; }
 
     try {
         db = await crypto.findOne({ userId: user.id })
@@ -132,8 +136,8 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
         return "Error"
     }
 
-    if (db.weed + db.weedBags >= 60) {
-        return "Inventory full."
+    if (db.weed < 5) {
+        return "You don't have enough weed."
     }
 
     if (db.busyWeed === true) {
@@ -146,14 +150,14 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('harvest_weed')
-                .setEmoji('🌿')
-                .setLabel('Harvest weed')
+                .setCustomId('cut_weed')
+                .setEmoji('🔪')
+                .setLabel('Cut weed')
                 .setStyle('SUCCESS')
         )
 
     const embed = new MessageEmbed()
-        .setTitle('Harvest some weed')
+        .setTitle('Cut some weed')
         .setColor('RANDOM')
 
     await msgInt.reply({
@@ -170,12 +174,15 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
         time: 1000 * 15
     });
 
+    const weedbags = ~~(db.weed/5)
+
     collector.on('collect', async (button) => {
         const embed = new MessageEmbed()
-            .setTitle(`${button.user.username} is harvesting some weed...`)
+            .setTitle(`${button.user.username} is cutting some weed...`)
+            .setDescription("The more weed you have, the longer it takes.")
             .setColor('RANDOM')
 
-        collector.resetTimer({ time: 10000 })
+        collector.resetTimer({ time: 1000 * (weedbags * 5) })
 
         await msgInt.editReply({
             embeds: [embed],
@@ -184,15 +191,16 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
     })
 
     collector.on('end', async (collection) => {
-        if (collection.first()?.customId === 'harvest_weed') {
-            const randomAmount = Math.floor(Math.random() * 3) + 1
+        if (collection.first()?.customId === 'cut_weed') {
+            const weed = weedbags * 5
 
-            db.weed += randomAmount
+            db.weed -= weed
+            db.weedBags = weedbags
             db.busyWeed = false
             db.save()
 
             const embed = new MessageEmbed()
-                .setTitle(`${msgInt.user.username} has harvested ${randomAmount} weed`)
+                .setTitle(`${msgInt.user.username} has cut ${weed} weed and packed ${weedbags} weed bags`)
                 .setColor('RANDOM')
 
             await msgInt.editReply({
@@ -201,7 +209,7 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
             });
         } else {
             const embed = new MessageEmbed()
-                .setTitle('You waited too long, the weed has expired')
+                .setTitle('You waited too long, the cutting session has expired')
                 .setColor('RANDOM')
 
             db.busyWeed = false
