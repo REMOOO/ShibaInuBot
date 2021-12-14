@@ -62,7 +62,7 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     ctx.fillStyle = "#000000"
-    ctx.font = "20px Times New Roman"
+    ctx.font = "16px Times New Roman"
     ctx.fillText("The Most Addictive Game Of The Year 2022", 10, 270)
 
     ctx.drawImage(image, 10, 20, 365, 225);
@@ -96,7 +96,7 @@ async function createInteractionCanvas(messages: Collection<string, Message<bool
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     ctx.fillStyle = "#000000"
-    ctx.font = "20px Times New Roman"
+    ctx.font = "16px Times New Roman"
     ctx.fillText("The Most Addictive Game Of The Year 2022", 10, 270)
 
     ctx.drawImage(image, 10, 20, 365, 225);
@@ -140,7 +140,7 @@ async function createTargetCanvas(target: GuildMember) {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     ctx.fillStyle = "#000000"
-    ctx.font = "20px Times New Roman"
+    ctx.font = "16px Times New Roman"
     ctx.fillText("The Most Addictive Game Of The Year 2022", 10, 270)
 
     ctx.drawImage(avatar, 10, 20, 365, 225);
