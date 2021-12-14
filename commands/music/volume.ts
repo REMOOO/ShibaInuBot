@@ -12,7 +12,7 @@ export default {
     expectedArgsTypes: ['INTEGER'],
 
     callback: async ({ interaction, args }) => {
-        console.log(`volulme ${args[0]}`)
+        console.log(`volume ${args[0]}`)
 
         const volume  = interaction.options.getInteger("volume")!
 
