@@ -13,6 +13,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ channel, message, interaction }) => {
+        console.log(`9gag`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         await nineGag(target, interaction, channel, message)

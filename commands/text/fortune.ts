@@ -8,6 +8,8 @@ export default {
     slash: 'both',
     
     callback: async ({ message: msg, interaction: msgInt, channel}) => {
+        console.log(`fortune`)
+
         if(!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {
                 await fortuneMsg(msg, channel)

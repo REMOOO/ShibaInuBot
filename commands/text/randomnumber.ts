@@ -13,6 +13,8 @@ export default {
     expectedArgsTypes: ['INTEGER', 'INTEGER'],
 
     callback: async ({ args, interaction, channel, message }) => {
+        console.log(`randomnumber`)
+
         const min = parseInt(args[0])
         const max = parseInt(args[1])
 

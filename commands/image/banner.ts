@@ -14,6 +14,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ channel, message, interaction }) => {
+        console.log(`banner`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         if (!target) {

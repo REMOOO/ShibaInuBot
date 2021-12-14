@@ -9,6 +9,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message}) => {
+        console.log(`genshin`)
+
         var { title, res } = await getImageFromReddit();
 
         return genshin(interaction, channel, message, title, res)

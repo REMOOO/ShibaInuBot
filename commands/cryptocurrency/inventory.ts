@@ -10,6 +10,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`inventory`)
+
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
                 return inventory(message, interaction)

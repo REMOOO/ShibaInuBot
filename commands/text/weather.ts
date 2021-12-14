@@ -13,6 +13,8 @@ export default {
     maxArgs: 1,
 
     callback: async ({ args, interaction, channel, message }) => {
+        console.log(`weather`)
+
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
                 return weather(args)

@@ -14,6 +14,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ channel, message, interaction }) => {
+        console.log(`space`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         
         await space(target, interaction, channel, message);

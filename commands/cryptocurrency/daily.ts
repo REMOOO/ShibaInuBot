@@ -12,6 +12,7 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`daily`)
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {

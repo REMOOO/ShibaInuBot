@@ -10,6 +10,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`shibainucoin`)
+
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
                 return shibainucoin()

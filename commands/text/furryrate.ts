@@ -12,6 +12,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`furryrate`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         return furryrate(interaction, channel, message, target)

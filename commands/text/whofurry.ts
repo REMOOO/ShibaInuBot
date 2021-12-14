@@ -8,6 +8,8 @@ export default {
     slash: 'both',
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`whofurry`)
+
         let randomUser
         let randomFurryHater
         return whofurry(interaction, channel, message, randomUser, randomFurryHater)

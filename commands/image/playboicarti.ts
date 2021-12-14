@@ -10,6 +10,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`playboicarti`)
+
         var { title, res } = await getImageFromReddit();
 
         return playboicarti(interaction, channel, message, title, res)

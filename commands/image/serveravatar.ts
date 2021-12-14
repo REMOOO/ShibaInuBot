@@ -14,6 +14,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ message, channel, interaction }) => {
+        console.log(`serveravatar`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         if (!target) {

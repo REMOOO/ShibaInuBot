@@ -16,6 +16,8 @@ export default {
     maxArgs: 4,
 
     callback: async ({ guild, args, channel, interaction }) => {
+        console.log(`giveaway`)
+
         if (botHasPermissionsInteraction(channel, interaction)) {
             const prize = args[0]
             const winnersCount = args[1]

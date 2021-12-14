@@ -9,6 +9,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`football`)
+
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {
                 return football()

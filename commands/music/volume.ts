@@ -12,6 +12,8 @@ export default {
     expectedArgsTypes: ['INTEGER'],
 
     callback: async ({ interaction }) => {
+        console.log(`volulme`)
+
         const volume  = interaction.options.getInteger("volume")!
 
         if(volume > 100) return interaction.reply({ content: "Can't go higher than 100%. Especially you.", ephemeral: true})

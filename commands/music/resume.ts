@@ -7,6 +7,8 @@ export default {
 
     slash: true,
     callback: async ({ interaction }) => {
+        console.log(`resume`)
+
         const isConnected = await music.isConnected({
             interaction: interaction
         })

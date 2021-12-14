@@ -9,6 +9,7 @@ export default {
     slash: 'both',
 
     callback: async ({ guild, interaction, channel, message }) => {
+        console.log(`rich`)
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {

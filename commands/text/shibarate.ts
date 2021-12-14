@@ -12,6 +12,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`shibarate`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         return shibarate(interaction, channel, message, target)

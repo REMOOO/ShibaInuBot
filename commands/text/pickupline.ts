@@ -8,6 +8,8 @@ export default {
     slash: 'both',
     
     callback: async ({ message: msg, interaction: msgInt, channel}) => {
+        console.log(`pickupline`)
+
         if(!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {
                 return pickupline()

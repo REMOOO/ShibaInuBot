@@ -14,6 +14,8 @@ export default {
     expectedArgsTypes: ['STRING'],
 
     callback: async ({ message, interaction, args, channel }) => {
+        console.log(`lyrics`)
+
         let song
         if (!interaction) {
             song = message.content.slice(8)

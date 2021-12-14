@@ -8,6 +8,8 @@ export default {
     slash: 'both',
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`whogay`)
+
         let randomUser
         let randomCrush
 

@@ -10,6 +10,8 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, channel, message }) => {
+        console.log(`meme`)
+
         var { title, res } = await getImageFromReddit();
 
         return meme(interaction, channel, message, title, res)

@@ -13,6 +13,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: ({ channel, message, interaction }) => {
+        console.log(`avatar`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         if (!target) {
             return ownAvatar(interaction, channel, message)

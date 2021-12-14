@@ -15,6 +15,7 @@ export default {
 
     callback: async ({ interaction, channel, message }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
+        console.log(`balance`)
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {

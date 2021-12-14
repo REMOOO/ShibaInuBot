@@ -9,6 +9,8 @@ export default {
     slash: 'both',
 
     callback: async ({ message, interaction, channel}) => {
+        console.log(`bunny`)
+
         var { title, res } = await getImageFromReddit();
 
         return bunny(interaction, channel, message, title, res)

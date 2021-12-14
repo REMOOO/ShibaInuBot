@@ -12,6 +12,8 @@ export default {
     expectedArgsTypes: ['INTEGER'],
 
     callback: async ({ interaction }) => {
+        console.log(`jump`)
+
         const number = interaction.options.getInteger("number")!
 
         const isConnected = await music.isConnected({

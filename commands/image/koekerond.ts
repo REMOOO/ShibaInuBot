@@ -13,6 +13,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ channel, message, interaction }) => {
+        console.log(`koekerond`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         await koekerond(target, interaction, channel, message)

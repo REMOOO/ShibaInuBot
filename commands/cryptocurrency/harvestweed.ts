@@ -10,6 +10,7 @@ export default {
     slash: 'both',
 
     callback: async ({ message: msg, interaction: msgInt, channel }) => {
+        console.log(`harvestweed`)
 
         if (!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {

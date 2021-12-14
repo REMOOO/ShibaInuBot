@@ -9,6 +9,8 @@ export default {
     slash: 'both',
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`whopenis`)
+
         let randomUser
         let randomSmallPenisUser
         return whopenis(interaction, channel, message, randomUser, randomSmallPenisUser)

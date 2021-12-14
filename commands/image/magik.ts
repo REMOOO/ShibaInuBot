@@ -17,6 +17,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ channel, message, interaction }) => {
+        console.log(`magik`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         await magik(target, interaction, channel, message);
     }

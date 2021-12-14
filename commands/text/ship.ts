@@ -13,6 +13,8 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: ({ message, interaction, channel }) => {
+        console.log(`ship`)
+
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         return shipCmd(target, interaction, channel, message)
     }

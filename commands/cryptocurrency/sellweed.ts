@@ -9,6 +9,7 @@ export default {
     slash: 'both',
 
     callback: async ({ message: msg, interaction: msgInt, channel }) => {
+        console.log(`sellweed`)
 
         if (!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {
