@@ -87,8 +87,12 @@ client.on('ready', () => {
     })
 
     setInterval(() => {
-        if(guilds) {
-            client.user?.setActivity(`$help | barking in ${guilds.length - 1} servers`, {type: 'PLAYING'})
+        const guildsInt = [""]
+        client.guilds.cache.forEach(guild => {
+            guildsInt.push(guild.name)
+        })
+        if(guildsInt) {
+            client.user?.setActivity(`$help | barking in ${guildsInt.length - 1} servers`, {type: 'PLAYING'})
         }
   }, 1000 * 60 * 5);
 })
