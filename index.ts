@@ -85,6 +85,12 @@ client.on('ready', () => {
             return "Music finish error. Please report this ty"
         }
     })
+
+    setInterval(() => {
+        if(guilds) {
+            client.user?.setActivity(`$help | barking in ${guilds.length - 1} servers`, {type: 'PLAYING'})
+        }
+  }, 1000 * 60 * 5);
 })
 
 client.login(process.env.TOKEN)
