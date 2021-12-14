@@ -52,6 +52,10 @@ client.on('ready', () => {
                 emoji: '🎶'
             },
             {
+                name: 'NSFW',
+                emoji: '🔞'
+            },
+            {
                 name: 'Moderation',
                 emoji : '🛡️'
             }
