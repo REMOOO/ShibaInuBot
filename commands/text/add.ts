@@ -12,7 +12,7 @@ export default {
     maxArgs: 2,
 
     callback: ({ args, interaction, channel, message }) => {
-        console.log(`add`)
+        console.log(`add ${args[0]} ${args[1]}`)
 
         const number1 = parseInt(args[0])
         const number2 = parseInt(args[1])

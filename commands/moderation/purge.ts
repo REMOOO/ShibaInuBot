@@ -15,7 +15,7 @@ export default {
     slash: 'both',
 
     callback: async ({ message, interaction, channel, args }) => {
-        console.log(`purge`)
+        console.log(`purge ${args[0]}`)
 
         if (parseInt(args[0]) > 100) {
             return "Value should be less than or equal to 100."

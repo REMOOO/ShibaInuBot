@@ -11,8 +11,8 @@ export default {
     minArgs: 1,
     expectedArgs: '<onoroff>',
     expectedArgsTypes: ['BOOLEAN'],
-    callback: async ({ interaction }) => {
-        console.log(`repeat`)
+    callback: async ({ interaction, args }) => {
+        console.log(`repeat ${args[0]}`)
 
         const realBoolean = interaction.options.getBoolean("onoroff")!
         let boolean

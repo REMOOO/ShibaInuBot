@@ -9,7 +9,7 @@ export default {
     slash: 'both',
 
     callback: async ({ message: msg, interaction: msgInt, channel }) => {
-        console.log(`sellweed`)
+        console.log(`sellweed ${args[0]}`)
 
         if (!msgInt) {
             if (botHasPermissionsMessage(channel, msg)) {

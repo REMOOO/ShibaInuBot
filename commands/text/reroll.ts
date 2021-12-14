@@ -15,7 +15,7 @@ export default {
     maxArgs: 1,
 
     callback: async ({ guild, args, channel, interaction }) => {
-        console.log(`reroll`)
+        console.log(`reroll ${args[0]}`)
 
         if (botHasPermissionsInteraction(channel, interaction)) {
             const winnersCount = args[0]

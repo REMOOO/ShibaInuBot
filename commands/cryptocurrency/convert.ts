@@ -13,7 +13,7 @@ export default {
     maxArgs: 2,
 
     callback: async ({ args, interaction, channel, message }) => {
-        console.log(`convert`)
+        console.log(`convert ${args[0]} ${args[1]}`)
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {

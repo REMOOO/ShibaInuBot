@@ -14,7 +14,7 @@ export default {
     expectedArgsTypes: ['STRING'],
 
     callback: async ({ message, interaction, args, channel }) => {
-        console.log(`lyrics`)
+        console.log(`lyrics ${args[0]}`)
 
         let song
         if (!interaction) {

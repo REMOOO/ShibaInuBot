@@ -13,7 +13,7 @@ export default {
     maxArgs: 1,
 
     callback: async ({ args, interaction, channel, message }) => {
-        console.log(`ip`)
+        console.log(`ip ${args[0]}`)
 
         if (!interaction) {
             if (botHasPermissionsMessage(channel, message)) {

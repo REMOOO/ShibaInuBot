@@ -16,7 +16,7 @@ export default {
     expectedArgsTypes: ['NUMBER'],
 
     callback: async ({ args, interaction, channel, message }) => {
-        console.log(`buybitcoin`)
+        console.log(`buybitcoin ${args[0]}`)
 
         const dollars = Number(args[0])
 

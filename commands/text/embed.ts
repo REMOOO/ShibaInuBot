@@ -14,7 +14,7 @@ export default {
     expectedArgsTypes: ['STRING', 'STRING'],
 
     callback: async ({ message, interaction, channel, args }) => {
-        console.log(`embed`)
+        console.log(`embed ${args[0]}`)
 
         await embed(interaction, channel, message, args);
     }
