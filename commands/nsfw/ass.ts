@@ -39,7 +39,8 @@ async function getImageFromReddit() {
         "assinthong",
         "asstastic",
         "facedownassup",
-        "NSFW_ASS"
+        "NSFW_ASS",
+        "pawg"
     ];
 
     const res = await getter.fetch({

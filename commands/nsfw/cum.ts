@@ -4,13 +4,13 @@ const getter = require("reddit-image-fetcher")
 
 export default {
     category: 'Image',
-    description: 'See some pussy.',
-    aliases: ['vagina'],
+    description: 'See some cum sluts.',
+    aliases: ['cumsluts'],
 
     slash: 'both',
 
     callback: async ({ channel, guild }) => {
-        console.log(`pussy in ${guild?.name}`)
+        console.log(`cum in ${guild?.name}`)
 
         if (!channel.nsfw) {
             return "🔞 This command can only be used in NSFW channels."
@@ -18,11 +18,11 @@ export default {
 
         var { title, res } = await getImageFromReddit();
 
-        return pussy(title, res)
+        return cum(title, res)
     }
 } as ICommand
 
-function pussy(title: string, res: any) {
+function cum(title: string, res: any) {
     return createEmbed(title, res)
 }
 
@@ -35,9 +35,7 @@ function createEmbed(title: string, res: any) {
 
 async function getImageFromReddit() {
     let subreddits = [
-        "pussy",
-        "lipsthatgrip",
-        "godpussy"
+        "CumSluts"
     ];
 
     const res = await getter.fetch({
@@ -48,7 +46,7 @@ async function getImageFromReddit() {
     let title = "";
 
     if (res[0].title.length > 256) {
-        title = "pussy";
+        title = "Cum";
     } else {
         title = res[0].title;
     }

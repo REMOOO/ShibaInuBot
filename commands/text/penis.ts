@@ -4,7 +4,7 @@ import { ICommand } from "wokcommands";
 export default {
     category: 'Text',
     description: 'Measure the penis of a user.',
-    aliases : ['peepee', 'pp', 'dick', 'howlong'],
+    aliases : ['peepee', 'pp', 'howlong'],
 
     slash: 'both',
 
