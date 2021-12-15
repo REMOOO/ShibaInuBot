@@ -3,7 +3,7 @@ import { MessageEmbed } from "discord.js";
 const getter = require("reddit-image-fetcher")
 
 export default {
-    category: 'Image',
+    category: 'NSFW',
     description: 'See some celebrity nsfw.',
 
     slash: 'both',
