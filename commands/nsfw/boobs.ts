@@ -47,7 +47,8 @@ async function getImageFromReddit() {
         "naturaltitties",
         "tinytits",
         "tits",
-        "tittydrop"
+        "tittydrop",
+        "ghostnipples"
     ];
 
     const res = await getter.fetch({
