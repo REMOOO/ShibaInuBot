@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -13,7 +13,11 @@ export default {
     maxArgs: 2,
 
     callback: async ({ args, guild }) => {
-        console.log(`convert ${args[0]} ${args[1]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`convert ${args[0]} ${args[1]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         return convert(args)
     }

@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 import Genius from "genius-lyrics";
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 const Client = new Genius.Client
 
 export default {
@@ -14,7 +14,11 @@ export default {
     expectedArgsTypes: ['STRING'],
 
     callback: async ({ message, interaction, args, guild }) => {
-        console.log(`lyrics ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`lyrics ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         let song
         if (!interaction) {

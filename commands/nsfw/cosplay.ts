@@ -1,5 +1,5 @@
 import { ICommand } from "wokcommands";
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 const getter = require("reddit-image-fetcher")
 
 export default {
@@ -9,7 +9,11 @@ export default {
     slash: 'both',
 
     callback: async ({ channel, guild }) => {
-        console.log(`cosplay in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`cosplay in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         if (!channel.nsfw) {
             return "🔞 This command can only be used in NSFW channels."

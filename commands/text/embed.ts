@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -14,7 +14,11 @@ export default {
     expectedArgsTypes: ['STRING', 'STRING'],
 
     callback: async ({ message, interaction, channel, args, guild }) => {
-        console.log(`embed ${args[0]} ${args[1]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embedOk = new MessageEmbed()
+            .setTitle(`embed ${args[0]} ${args[1]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embedOk]})
 
         await embed(interaction, channel, message, args);
     }

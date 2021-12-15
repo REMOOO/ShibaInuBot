@@ -1,4 +1,4 @@
-import { CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { CommandInteraction, CacheType, Message, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -13,7 +13,11 @@ export default {
     expectedArgsTypes: ['INTEGER', 'INTEGER'],
 
     callback: async ({ args, interaction, message, guild }) => {
-        console.log(`randomnumber ${args[0]} ${args[1]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`randomnumber ${args[0]} ${args[1]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const min = parseInt(args[0])
         const max = parseInt(args[1])

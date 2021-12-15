@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -8,7 +8,11 @@ export default {
     slash: 'both',
 
     callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
-        console.log(`fortune in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`fortune in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         if (!msgInt) {
             await fortuneMsg(msg, channel)

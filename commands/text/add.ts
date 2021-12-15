@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands"
 
 export default {
@@ -11,8 +11,12 @@ export default {
     minArgs: 2,
     maxArgs: 2,
 
-    callback: ({ args, guild }) => {
-        console.log(`add ${args[0]} ${args[1]} in ${guild?.name}`)
+    callback: async ({ args, guild }) => {
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`add ${args[0]} ${args[1]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const number1 = parseInt(args[0])
         const number2 = parseInt(args[1])

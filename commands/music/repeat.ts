@@ -1,3 +1,4 @@
+import { WebhookClient, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const music = require("@koenie06/discord.js-music")
 
@@ -12,7 +13,11 @@ export default {
     expectedArgs: '<onoroff>',
     expectedArgsTypes: ['BOOLEAN'],
     callback: async ({ interaction, args, guild }) => {
-        console.log(`repeat ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`repeat ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const realBoolean = interaction.options.getBoolean("onoroff")!
         let boolean

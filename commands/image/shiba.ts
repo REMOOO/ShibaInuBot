@@ -1,5 +1,5 @@
 import { ICommand } from "wokcommands";
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 const getter = require("reddit-image-fetcher")
 
 export default {
@@ -9,7 +9,11 @@ export default {
     slash: 'both',
 
     callback: async ({guild}) => {
-        console.log(`shiba in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`shiba in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         var { title, res } = await getImageFromReddit();
 

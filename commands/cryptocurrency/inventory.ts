@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, GuildMember, User } from "discord.js";
+import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, GuildMember, User, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 
@@ -10,7 +10,11 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, message, guild }) => {
-        console.log(`inventory in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`inventory in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         return inventory(message, interaction)
     }

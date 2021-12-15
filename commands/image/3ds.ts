@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
@@ -13,7 +13,11 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ message, interaction, guild }) => {
-        console.log(`3ds in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`3ds in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

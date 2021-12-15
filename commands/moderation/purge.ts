@@ -1,4 +1,4 @@
-import { Message, TextChannel } from "discord.js";
+import { Message, MessageEmbed, TextChannel, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -15,7 +15,11 @@ export default {
     slash: 'both',
 
     callback: async ({ message, channel, args, guild }) => {
-        console.log(`purge ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`purge ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         if (parseInt(args[0]) > 100) {
             return "Value should be less than or equal to 100."

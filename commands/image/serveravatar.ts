@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -14,7 +14,11 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ message, interaction, guild }) => {
-        console.log(`serveravatar in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`serveravatar in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

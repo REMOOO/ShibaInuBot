@@ -1,4 +1,4 @@
-import { GuildMember, MessageEmbed } from "discord.js";
+import { GuildMember, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -11,8 +11,12 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction, guild }) => {
-        console.log(`waifurate in ${guild?.name}`)
+    callback: async ({ message, interaction, guild }) => {
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`waifurate in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageButton, MessageActionRow } from "discord.js";
+import { MessageEmbed, MessageButton, MessageActionRow, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import giveawaydb from '../../model/giveaway'
 const ms = require('ms')
@@ -16,7 +16,11 @@ export default {
     maxArgs: 4,
 
     callback: async ({ guild, args, channel, interaction }) => {
-        console.log(`giveaway ${args[0]} ${args[1]} ${args[2]} ${args[3]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`giveaway ${args[0]} ${args[1]} ${args[2]} ${args[3]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const prize = args[0]
         const winnersCount = args[1]

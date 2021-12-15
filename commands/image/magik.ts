@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 const gm = require("gm"),
     imageMagick = gm.subClass({
@@ -17,7 +17,11 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ message, interaction, guild }) => {
-        console.log(`magik in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`magik in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         await magik(target, interaction, message);

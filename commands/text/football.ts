@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -9,7 +9,11 @@ export default {
     slash: 'both',
 
     callback: async ({guild}) => {
-        console.log(`football in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`football in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         return football()
     }

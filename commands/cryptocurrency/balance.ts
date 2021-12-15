@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, GuildMember, User } from "discord.js";
+import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, GuildMember, User, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 
@@ -14,8 +14,12 @@ export default {
     expectedArgsTypes: ['USER'],
 
     callback: async ({ interaction, message, guild }) => {
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`balance in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-        console.log(`balance in ${guild?.name}`)
 
         return balance(target, message, interaction)
     }

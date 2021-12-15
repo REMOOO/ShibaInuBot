@@ -1,3 +1,4 @@
+import { WebhookClient, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const music = require("@koenie06/discord.js-music")
 
@@ -12,7 +13,11 @@ export default {
     expectedArgsTypes: ['INTEGER'],
 
     callback: async ({ args, interaction, guild }) => {
-        console.log(`jump ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`jump ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const number = interaction.options.getInteger("number")!
 

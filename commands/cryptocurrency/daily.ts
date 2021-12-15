@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 const ms = require('parse-ms-js');
@@ -12,7 +12,11 @@ export default {
     slash: 'both',
 
     callback: async ({ interaction, message, guild }) => {
-        console.log(`daily in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`daily in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         return daily(message, interaction)
     }

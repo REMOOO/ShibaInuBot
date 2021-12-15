@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -13,7 +13,11 @@ export default {
     maxArgs: 1,
 
     callback: async ({ args, guild }) => {
-        console.log(`astronomy ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`astronomy ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         return astronomy(args)
     }

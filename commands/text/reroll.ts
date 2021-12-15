@@ -1,4 +1,4 @@
-import { MessageButton, MessageActionRow } from "discord.js";
+import { MessageButton, MessageActionRow, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import giveawaydb from '../../model/giveaway'
 
@@ -15,7 +15,11 @@ export default {
     maxArgs: 1,
 
     callback: async ({ guild, args, channel }) => {
-        console.log(`reroll ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`reroll ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const winnersCount = args[0]
 

@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, User } from "discord.js";
+import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, User, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 const fetch = require('axios')
@@ -16,7 +16,11 @@ export default {
     expectedArgsTypes: ['NUMBER'],
 
     callback: async ({ args, interaction, message, guild }) => {
-        console.log(`sellshiba ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`sellshiba ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const shibainucoins = Number(args[0])
 

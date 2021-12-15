@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, MessageActionRow, MessageButton, Interaction } from "discord.js";
+import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, MessageActionRow, MessageButton, Interaction, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import crypto from '../../model/cryptocurrency'
 
@@ -10,7 +10,11 @@ export default {
     slash: 'both',
 
     callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
-        console.log(`harvestweed in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`harvestweed in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         if (!msgInt) {
             return harvestweedMsg(channel, msg)

@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,8 +7,12 @@ export default {
 
     slash: 'both',
 
-    callback: ({ guild, message, interaction }) => {
-        console.log(`whopussy in ${guild?.name}`)
+    callback: async ({ guild, message, interaction }) => {
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`whopussy in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         let randomUser
         let randomGetsNoPussy

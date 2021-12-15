@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 const music = require("@koenie06/discord.js-music")
-import { CacheType, CommandInteraction, GuildMember, VoiceChannel } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, MessageEmbed, VoiceChannel, WebhookClient } from "discord.js";
 
 export default {
     category: "Music",
@@ -13,7 +13,11 @@ export default {
     expectedArgsTypes: ['STRING'],
 
     callback: async ({ args, interaction, guild }) => {
-        console.log(`play ${args[0]} in ${guild?.name}`)
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+        const embed = new MessageEmbed()
+            .setTitle(`play ${args[0]} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({embeds: [embed]})
 
         const song = interaction.options.getString("song") as string
         const member = interaction.guild?.members.cache.get(interaction.member.user.id)
