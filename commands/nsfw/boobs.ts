@@ -34,7 +34,21 @@ function createEmbed(title: string, res: any) {
 }
 
 async function getImageFromReddit() {
-    let subreddits = ["boobs", "boobies", "boobbounce"];
+    let subreddits = [
+        "boobs",
+        "boobies",
+        "boobbounce",
+        "BigBoobsGoneWild",
+        "hugeboobs",
+        "TheUnderboob",
+        "bigtitsinbikinis",
+        "Bigtitssmalltits",
+        "boltedontits",
+        "naturaltitties",
+        "tinytits",
+        "tits",
+        "tittydrop"
+    ];
 
     const res = await getter.fetch({
         type: 'custom',
