@@ -35,7 +35,11 @@ function createEmbed(title: string, res: any) {
 
 async function getImageFromReddit() {
     let subreddits = [
-        "CumSluts"
+        "CumSluts",
+        "cumfetish",
+        "cumonclothes",
+        "cumontongue",
+        "cumswallowing"
     ];
 
     const res = await getter.fetch({
