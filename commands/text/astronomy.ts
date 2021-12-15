@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -12,18 +12,10 @@ export default {
     minArgs: 1,
     maxArgs: 1,
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args }) => {
         console.log(`astronomy ${args[0]}`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return astronomy(args)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return astronomy(args)
-            }
-        }
+        return astronomy(args)
     }
 } as ICommand
 
@@ -72,12 +64,4 @@ function createEmbed(data: any, region: string) {
         .addField("Moon illumination", `${data.astronomy.astro.moon_illumination}`, true)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

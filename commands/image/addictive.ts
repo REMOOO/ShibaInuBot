@@ -12,32 +12,30 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`addictive`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await addictive(target, interaction, channel, message)
+        await addictive(target, interaction, message)
     }
 } as ICommand
 
-async function addictive(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function addictive(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousAddictive(interaction, channel, message)
+        previousAddictive(interaction, message)
     } else {
-        await targetAddictive(interaction, channel, message, target)
+        await targetAddictive(interaction, message, target)
     }
 }
 
-function previousAddictive(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousAddictive(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message)
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             previousInteraction(interaction)
-        }
+        
     }
 }
 
@@ -111,18 +109,9 @@ function createInteraction(canvas: any, interaction: CommandInteraction<CacheTyp
     });
 }
 
-async function targetAddictive(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const canvas = await createTargetCanvas(target)
+async function targetAddictive(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
+    const canvas = await createTargetCanvas(target)
             createTarget(canvas, interaction, message)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const canvas = await createTargetCanvas(target)
-            createTarget(canvas, interaction, message)
-        }
-    }
 }
 
 async function createTargetCanvas(target: GuildMember) {
@@ -158,12 +147,4 @@ function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, m
             files: [attachment]
         });
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

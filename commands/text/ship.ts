@@ -1,10 +1,10 @@
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
     category: 'Text',
     description: 'Ship your love with another user.',
-    aliases : ['love', 'match'],
+    aliases: ['love', 'match'],
 
     slash: 'both',
 
@@ -12,43 +12,39 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction, channel }) => {
+    callback: ({ message, interaction }) => {
         console.log(`ship`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-        return shipCmd(target, interaction, channel, message)
+        return shipCmd(target, interaction, message)
     }
 } as ICommand
 
-function shipCmd(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function shipCmd(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        return createOwnEmbed(interaction, channel, message)
+        return createOwnEmbed(interaction, message)
     } else {
-        return createTargetEmbed(interaction, channel, message, target)
+        return createTargetEmbed(interaction, message, target)
     }
 }
 
-function createTargetEmbed(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
+function createTargetEmbed(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createTargetMessageEmbed(message, target)
-        }
+        return createTargetMessageEmbed(message, target)
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createTargetInteractionEmbed(interaction, target)
-        }
+        return createTargetInteractionEmbed(interaction, target)
+
     }
 }
 
-function createOwnEmbed(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function createOwnEmbed(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createOwnMessageEmbed(message)
-        }
+        return createOwnMessageEmbed(message)
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createOwnInteractionEmbed(interaction)
-        }
+        return createOwnInteractionEmbed(interaction)
+
     }
 }
 
@@ -104,12 +100,4 @@ function ship() {
     const shipLevel = "💖".repeat(shipIndex) + "💔".repeat(10 - shipIndex)
     const shipArray = [shipness, shipLevel]
     return shipArray
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

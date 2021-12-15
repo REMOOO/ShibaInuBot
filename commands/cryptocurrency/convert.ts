@@ -12,18 +12,10 @@ export default {
     minArgs: 2,
     maxArgs: 2,
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args, interaction }) => {
         console.log(`convert ${args[0]} ${args[1]}`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return convert(args)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return convert(args)
-            }
-        }
+        return convert(args)
     }
 } as ICommand
 
@@ -50,7 +42,7 @@ async function convert(args: string[]) {
 }
 
 function checkComma(data: any) {
-    if (data[Object.keys(data)[0]].toString().substr(0,2) === "0.") {
+    if (data[Object.keys(data)[0]].toString().substr(0, 2) === "0.") {
         return data[Object.keys(data)[0]]
     } else {
         return data[Object.keys(data)[0]].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -63,12 +55,4 @@ function createEmbed(data: any, coin: any, currency1: string, currency2: string)
         .setDescription(`1 ${currency1} = ${coin} ${currency2}`)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

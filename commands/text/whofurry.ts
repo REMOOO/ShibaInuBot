@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,26 +7,24 @@ export default {
 
     slash: 'both',
 
-    callback: ({ message, interaction, channel }) => {
+    callback: ({ message, interaction }) => {
         console.log(`whofurry`)
 
         let randomUser
         let randomFurryHater
-        return whofurry(interaction, channel, message, randomUser, randomFurryHater)
+        return whofurry(interaction, message, randomUser, randomFurryHater)
     }
 } as ICommand
 
-function whofurry(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, randomUser: undefined, randomFurryHater: undefined) {
+function whofurry(interaction: CommandInteraction<CacheType>, message: Message<boolean>, randomUser: undefined, randomFurryHater: undefined) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            ({ randomUser, randomFurryHater } = getRandomUserMessage(randomUser, message, randomFurryHater));
-            return createEmbed(randomUser, randomFurryHater)
-        }
+        ({ randomUser, randomFurryHater } = getRandomUserMessage(randomUser, message, randomFurryHater));
+        return createEmbed(randomUser, randomFurryHater)
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            ({ randomUser, randomFurryHater } = getRandomUserInteraction(randomUser, interaction, randomFurryHater));
-            return createEmbed(randomUser, randomFurryHater)
-        }
+        ({ randomUser, randomFurryHater } = getRandomUserInteraction(randomUser, interaction, randomFurryHater));
+        return createEmbed(randomUser, randomFurryHater)
+
     }
 }
 
@@ -64,12 +62,4 @@ function getRandomUserMessage(randomUser: any, message: Message<boolean>, random
         randomFurryHater = message.guild?.members.cache.random()?.user!;
     }
     return { randomUser, randomFurryHater };
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

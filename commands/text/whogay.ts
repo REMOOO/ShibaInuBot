@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,27 +7,24 @@ export default {
 
     slash: 'both',
 
-    callback: ({ message, interaction, channel }) => {
+    callback: ({ message, interaction }) => {
         console.log(`whogay`)
 
         let randomUser
         let randomCrush
 
-        return whogay(interaction, channel, message, randomUser, randomCrush)
+        return whogay(interaction, message, randomUser, randomCrush)
     }
 } as ICommand
 
-function whogay(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, randomUser: undefined, randomCrush: undefined) {
+function whogay(interaction: CommandInteraction<CacheType>, message: Message<boolean>, randomUser: undefined, randomCrush: undefined) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            ({ randomUser, randomCrush } = getRandomUserMessage(randomUser, message, randomCrush))
-            return createEmbed(randomUser, randomCrush)
-        }
+        ({ randomUser, randomCrush } = getRandomUserMessage(randomUser, message, randomCrush))
+        return createEmbed(randomUser, randomCrush)
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            ({ randomUser, randomCrush } = getRandomUserInteraction(randomUser, interaction, randomCrush))
-            return createEmbed(randomUser, randomCrush)
-        }
+        ({ randomUser, randomCrush } = getRandomUserInteraction(randomUser, interaction, randomCrush))
+        return createEmbed(randomUser, randomCrush)
     }
 }
 
@@ -65,12 +62,4 @@ function getRandomUserMessage(randomUser: any, message: Message<boolean>, random
         randomCrush = message.guild?.members.cache.random()?.user!;
     }
     return { randomUser, randomCrush };
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

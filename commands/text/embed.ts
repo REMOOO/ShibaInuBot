@@ -23,13 +23,11 @@ export default {
 
 async function embed(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, args: string[]) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            await createEmbedMessage(message);
-        }
+        await createEmbedMessage(message);
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            createEmbedInteraction(args, channel);
-        }
+        createEmbedInteraction(args, channel);
+
     }
 }
 
@@ -68,12 +66,4 @@ async function createEmbedMessage(message: Message<boolean>) {
     message.channel.send({
         embeds: [embed]
     });
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return ((channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES")) && (channel.permissionsFor(interaction.guild?.me!).has("MANAGE_MESSAGES")) && (channel.permissionsFor(interaction.guild?.me!).has("EMBED_LINKS")))
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return ((channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES")) && (channel.permissionsFor(message.guild?.me!).has("MANAGE_MESSAGES")) && (channel.permissionsFor(message.guild?.me!).has("EMBED_LINKS")))
 }

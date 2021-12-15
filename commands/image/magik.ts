@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
 import { ICommand } from "wokcommands";
 const gm = require("gm"),
     imageMagick = gm.subClass({
@@ -16,34 +16,25 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`magik`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-        await magik(target, interaction, channel, message);
+        await magik(target, interaction, message);
     }
 } as ICommand
 
-async function magik(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function magik(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousMagik(interaction, channel, message);
+        previousMagik(interaction, message);
     } else {
-        await targetMagik(target, interaction, channel, message);
+        await targetMagik(target, interaction, message);
     }
 }
 
-async function targetMagik(target: GuildMember, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function targetMagik(target: GuildMember, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     const canvas = await createTargetCanvas(target);
-
-    if(!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            magikTarget(canvas, interaction, message);
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            magikTarget(canvas, interaction, message);
-        }
-    }
+    magikTarget(canvas, interaction, message);
 }
 
 function magikTarget(canvas: any, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
@@ -172,21 +163,19 @@ async function createTargetCanvas(target: GuildMember) {
     return canvas;
 }
 
-function previousMagik(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousMagik(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             message.channel.messages.fetch().then(async (messages) => {
                 const canvas = await createMessageCanvas(messages);
                 magikMessage(canvas, message);
             });
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             interaction.channel?.messages.fetch().then(async (messages) => {
                 const canvas = await createInteractionCanvas(messages);
                 magikInteraction(canvas, interaction);
             });
-        }
+        
     }
 }
 
@@ -424,12 +413,4 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
 
 function randomNumber() {
     return Math.floor(Math.random() * 501)
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

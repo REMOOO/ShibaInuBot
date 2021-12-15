@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -8,18 +8,10 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message }) => {
+    callback: async () => {
         console.log(`football`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return football()
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return football()
-            }
-        }
+        return football()
     }
 } as ICommand
 
@@ -54,12 +46,4 @@ function createEmbed(data: any, matches: string) {
         .setDescription(matches)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

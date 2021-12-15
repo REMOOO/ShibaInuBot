@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from "discord.js";
+import { GuildMember, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -11,25 +11,17 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction, channel }) => {
+    callback: ({ message, interaction }) => {
         console.log(`eboyrate`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        return eboyrate(interaction, channel, message, target)
+        return eboyrate(target)
     }
 } as ICommand
 
-function eboyrate(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember | undefined) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createEmbed(target)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createEmbed(target)
-        }
-    }
+function eboyrate(target: GuildMember | undefined) {
+    return createEmbed(target)
 }
 
 function createEmbed(target: GuildMember | undefined) {
@@ -54,12 +46,4 @@ function createOwnEmbed() {
 
 function getEboyRate() {
     return Math.floor(Math.random() * 101)
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

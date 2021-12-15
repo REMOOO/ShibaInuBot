@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 const music = require("@koenie06/discord.js-music")
-import { CacheType, CommandInteraction, GuildMember, Message, TextChannel, VoiceChannel } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, VoiceChannel } from "discord.js";
 
 export default {
     category: "Music",
@@ -12,7 +12,7 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ args, interaction, channel, message}) => {
+    callback: async ({ args, interaction }) => {
         console.log(`play ${args[0]}`)
 
         const song = interaction.options.getString("song") as string
@@ -21,9 +21,7 @@ export default {
 
         reply(voiceChannel, interaction)
 
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            await play(interaction, voiceChannel, song, member)
-        }
+        await play(interaction, voiceChannel, song, member)
     }
 } as ICommand
 
@@ -46,8 +44,4 @@ function reply(voiceChannel: VoiceChannel, interaction: CommandInteraction<Cache
     })
 
     interaction.reply({ content: "Song added", ephemeral: true})
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
 }

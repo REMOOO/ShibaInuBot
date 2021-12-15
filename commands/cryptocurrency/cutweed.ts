@@ -13,13 +13,11 @@ export default {
         console.log(`cutweed`)
 
         if (!msgInt) {
-            if (botHasPermissionsMessage(channel, msg)) {
-                return cutweedMsg(channel, msg)
-            }
+            return cutweedMsg(channel, msg)
+
         } else {
-            if (botHasPermissionsInteraction(channel, msgInt)) {
-                return cutweedInt(channel, msgInt)
-            }
+            return cutweedInt(channel, msgInt)
+
         }
     }
 } as ICommand
@@ -75,7 +73,7 @@ async function cutweedMsg(channel: TextChannel, msg: Message<boolean>) {
         time: 1000 * 15
     });
 
-    const weedbags = ~~(db.weed/5)
+    const weedbags = ~~(db.weed / 5)
 
     collector.on('collect', async (button) => {
         const embed = new MessageEmbed()
@@ -175,7 +173,7 @@ async function cutweedInt(channel: TextChannel, msgInt: CommandInteraction<Cache
         time: 1000 * 15
     });
 
-    const weedbags = ~~(db.weed/5)
+    const weedbags = ~~(db.weed / 5)
 
     collector.on('collect', async (button) => {
         const embed = new MessageEmbed()
@@ -222,12 +220,4 @@ async function cutweedInt(channel: TextChannel, msgInt: CommandInteraction<Cache
             });
         }
     });
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

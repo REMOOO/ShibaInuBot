@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, TextChannel } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,18 +7,10 @@ export default {
 
     slash: 'both',
     
-    callback: async ({ message: msg, interaction: msgInt, channel}) => {
+    callback: async () => {
         console.log(`pickupline`)
 
-        if(!msgInt) {
-            if (botHasPermissionsMessage(channel, msg)) {
-                return pickupline()
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, msgInt)) {
-                return pickupline()
-            }
-        }
+        return pickupline()
     },
 } as ICommand
 
@@ -124,12 +116,4 @@ async function pickupline() {
 function getRandomPickupline() {
     const random = Math.floor(Math.random() * pickuplines.length);
     return pickuplines[random]
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

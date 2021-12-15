@@ -12,32 +12,30 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`adidas`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await adidas(target, interaction, channel, message)
+        await adidas(target, interaction, message)
     }
 } as ICommand
 
-async function adidas(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function adidas(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousAdidas(interaction, channel, message)
+        previousAdidas(interaction, message)
     } else {
-        await targetAdidas(interaction, channel, message, target)
+        await targetAdidas(interaction, message, target)
     }
 }
 
-function previousAdidas(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousAdidas(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message)
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             previousInteraction(interaction)
-        }
+        
     }
 }
 
@@ -105,18 +103,9 @@ function createInteraction(canvas: any, interaction: CommandInteraction<CacheTyp
     });
 }
 
-async function targetAdidas(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const canvas = await createTargetCanvas(target)
+async function targetAdidas(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
+    const canvas = await createTargetCanvas(target)
             createTarget(canvas, interaction, message)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const canvas = await createTargetCanvas(target)
-            createTarget(canvas, interaction, message)
-        }
-    }
 }
 
 async function createTargetCanvas(target: GuildMember) {
@@ -148,12 +137,4 @@ function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, m
             files: [attachment]
         });
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

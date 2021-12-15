@@ -6,18 +6,16 @@ export default {
     description: 'Eat the fortune cookie to find your fortune.',
 
     slash: 'both',
-    
-    callback: async ({ message: msg, interaction: msgInt, channel}) => {
+
+    callback: async ({ message: msg, interaction: msgInt, channel }) => {
         console.log(`fortune`)
 
-        if(!msgInt) {
-            if (botHasPermissionsMessage(channel, msg)) {
-                await fortuneMsg(msg, channel)
-            }
+        if (!msgInt) {
+            await fortuneMsg(msg, channel)
+
         } else {
-            if (botHasPermissionsInteraction(channel, msgInt)) {
-                await fortuneInt(msgInt, channel)
-            }
+            await fortuneInt(msgInt, channel)
+
         }
     },
 } as ICommand
@@ -225,12 +223,4 @@ async function fortuneInt(msgInt: CommandInteraction<CacheType>, channel: TextCh
 function getRandomFortune() {
     const random = Math.floor(Math.random() * fortunes.length);
     return fortunes[random]
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

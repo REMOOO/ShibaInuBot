@@ -15,20 +15,13 @@ export default {
     expectedArgs: '<shibainucoins>',
     expectedArgsTypes: ['NUMBER'],
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args, interaction, message }) => {
         console.log(`sellshiba ${args[0]}`)
 
         const shibainucoins = Number(args[0])
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return sellshiba(shibainucoins, message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return sellshiba(shibainucoins, message, interaction)
-            }
-        }
+        return sellshiba(shibainucoins, message, interaction)
+
     }
 } as ICommand
 
@@ -87,12 +80,4 @@ function checkComma(coin: any) {
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

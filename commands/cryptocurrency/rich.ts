@@ -11,15 +11,8 @@ export default {
     callback: async ({ guild, interaction, channel, message }) => {
         console.log(`rich`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return rich(message, interaction, guild, channel)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return rich(message, interaction, guild, channel)
-            }
-        }
+        return rich(message, interaction, guild, channel)
+
     }
 } as ICommand
 
@@ -132,12 +125,4 @@ function checkComma(coin: any) {
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

@@ -8,25 +8,17 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ channel, message, interaction}) => {
+    callback: async () => {
         console.log(`cat`)
 
         var { title, res } = await getImageFromReddit();
 
-        return cat(interaction, channel, message, title, res)
+        return cat(title, res)
     }
 } as ICommand
 
-function cat(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, title: string, res: { image: string; }[]) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createEmbed(title, res)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createEmbed(title, res)
-        }
-    }
+function cat(title: string, res: { image: string; }[]) {
+    return createEmbed(title, res)
 }
 
 function createEmbed(title: string, res: { image: string; }[]) {
@@ -52,12 +44,4 @@ async function getImageFromReddit() {
         title = res[0].title;
     }
     return { title, res };
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

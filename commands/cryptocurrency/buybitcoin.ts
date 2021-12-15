@@ -15,20 +15,12 @@ export default {
     expectedArgs: '<dollars>',
     expectedArgsTypes: ['NUMBER'],
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args, interaction, message }) => {
         console.log(`buybitcoin ${args[0]}`)
 
         const dollars = Number(args[0])
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return buybitcoin(dollars, message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return buybitcoin(dollars, message, interaction)
-            }
-        }
+        return buybitcoin(dollars, message, interaction)
     }
 } as ICommand
 
@@ -82,17 +74,9 @@ async function createEmbed(db: any, bitcoins: number, dollars: number) {
 }
 
 function checkComma(coin: any) {
-    if (coin.toString().substr(0,2) === "0.") {
+    if (coin.toString().substr(0, 2) === "0.") {
         return coin
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

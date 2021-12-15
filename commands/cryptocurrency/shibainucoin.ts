@@ -12,15 +12,7 @@ export default {
     callback: async ({ interaction, channel, message }) => {
         console.log(`shibainucoin`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return shibainucoin()
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return shibainucoin()
-            }
-        }
+        return shibainucoin()
     }
 } as ICommand
 
@@ -53,12 +45,4 @@ function createEmbed(data: any, shibacoin: any) {
         .setDescription(`1 Shiba Inu coin = ${data.USD} dollars\n\n1 dollar = ${shibacoin} Shiba Inu coins`)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

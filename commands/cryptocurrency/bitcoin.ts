@@ -9,18 +9,10 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message }) => {
+    callback: async ({ interaction }) => {
         console.log(`bitcoin`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return bitcoin()
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return bitcoin()
-            }
-        }
+        return bitcoin()
     }
 } as ICommand
 
@@ -53,12 +45,4 @@ function createEmbed(data2: any, usd: any) {
         .setDescription(`1 Bitcoin = ${usd} dollars\n\n1 dollar = ${data2.BTC} Bitcoins`)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

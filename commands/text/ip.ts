@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -12,18 +12,10 @@ export default {
     minArgs: 1,
     maxArgs: 1,
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args }) => {
         console.log(`ip ${args[0]}`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return ip(args)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return ip(args)
-            }
-        }
+        return ip(args)
     }
 } as ICommand
 
@@ -68,12 +60,4 @@ function createEmbed(data: any, region: string) {
         .addField("Local time", `${data.localtime}`, true)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

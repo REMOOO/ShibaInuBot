@@ -15,20 +15,13 @@ export default {
     expectedArgs: '<bitcoins>',
     expectedArgsTypes: ['NUMBER'],
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args, interaction, message }) => {
         console.log(`sellbitcoin ${args[0]}`)
 
         const bitcoins = Number(args[0])
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return sellbitcoins(bitcoins, message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return sellbitcoins(bitcoins, message, interaction)
-            }
-        }
+        return sellbitcoins(bitcoins, message, interaction)
+
     }
 } as ICommand
 
@@ -87,12 +80,4 @@ function checkComma(coin: any) {
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

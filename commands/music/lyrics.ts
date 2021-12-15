@@ -1,6 +1,6 @@
 import { ICommand } from "wokcommands";
 import Genius from "genius-lyrics";
-import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
+import { MessageEmbed } from "discord.js";
 const Client = new Genius.Client
 
 export default {
@@ -13,7 +13,7 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ message, interaction, args, channel }) => {
+    callback: async ({ message, interaction, args }) => {
         console.log(`lyrics ${args[0]}`)
 
         let song
@@ -40,15 +40,7 @@ export default {
         const albumImage = firstSong.image
         const lyrics = await firstSong.lyrics()
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return createEmbed(artist, title, lyrics, albumImage)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return createEmbed(artist, title, lyrics, albumImage)
-            }
-        }
+        return createEmbed(artist, title, lyrics, albumImage)
     }
 } as ICommand
 
@@ -58,12 +50,4 @@ function createEmbed(artist: string, title: string, lyrics: string, albumImage: 
         .setDescription(lyrics)
         .setThumbnail(albumImage);
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

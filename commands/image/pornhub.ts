@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, TextChannel } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
@@ -12,32 +12,30 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`pornhub`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await pornhub(target, interaction, channel, message)
+        await pornhub(target, interaction, message)
     }
 } as ICommand
 
-async function pornhub(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function pornhub(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousPornhub(interaction, channel, message)
+        previousPornhub(interaction, message)
     } else {
-        await targetPornhub(interaction, channel, message, target)
+        await targetPornhub(interaction, message, target)
     }
 }
 
-function previousPornhub(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousPornhub(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message)
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             previousInteraction(interaction)
-        }
+        
     }
 }
 
@@ -105,18 +103,9 @@ function createInteraction(canvas: any, interaction: CommandInteraction<CacheTyp
     });
 }
 
-async function targetPornhub(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const canvas = await createTargetCanvas(target)
+async function targetPornhub(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
+    const canvas = await createTargetCanvas(target)
             createTarget(canvas, interaction, message)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const canvas = await createTargetCanvas(target)
-            createTarget(canvas, interaction, message)
-        }
-    }
 }
 
 async function createTargetCanvas(target: GuildMember) {
@@ -148,12 +137,4 @@ function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, m
             files: [attachment]
         });
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

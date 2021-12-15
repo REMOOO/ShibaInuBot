@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, TextChannel } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
@@ -12,42 +12,40 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ message, channel, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`mirror`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-        
-        await mirror(target, interaction, channel, message);
+
+        await mirror(target, interaction, message);
     }
 } as ICommand
 
-async function mirror(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function mirror(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousMirror(interaction, channel, message);
+        previousMirror(interaction, message);
     } else {
-        await targetMirror(target, interaction, channel, message);
+        await targetMirror(target, interaction, message);
     }
 }
 
-async function targetMirror(target: GuildMember, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function targetMirror(target: GuildMember, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     const canvas = await createTargetMessage(target);
 
-    createTarget(canvas, interaction, channel, message);
+    createTarget(canvas, interaction, message);
 }
 
-function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     const attachment = new MessageAttachment(canvas.toBuffer(), 'mirror.png');
 
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            message.channel.send({ files: [attachment] });
-        }
+        message.channel.send({ files: [attachment] });
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            interaction.reply({
-                files: [attachment]
-            });
-        }
+        interaction.reply({
+            files: [attachment]
+        });
+
     }
 }
 
@@ -68,21 +66,19 @@ async function createTargetMessage(target: GuildMember) {
     return canvas;
 }
 
-function previousMirror(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousMirror(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            message.channel.messages.fetch().then(async (messages) => {
-                const canvas = await createMessageCanvas(messages);
-                createMessage(canvas, message);
-            });
-        }
+        message.channel.messages.fetch().then(async (messages) => {
+            const canvas = await createMessageCanvas(messages);
+            createMessage(canvas, message);
+        });
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            interaction.channel?.messages.fetch().then(async (messages) => {
-                const canvas = await createInteractionCanvas(messages);
-                createInteraction(canvas, interaction);
-            });
-        }
+        interaction.channel?.messages.fetch().then(async (messages) => {
+            const canvas = await createInteractionCanvas(messages);
+            createInteraction(canvas, interaction);
+        });
+
     }
 }
 
@@ -130,12 +126,4 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
     ctx.scale(-1, 1);
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     return canvas;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

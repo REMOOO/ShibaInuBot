@@ -11,18 +11,10 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message }) => {
+    callback: async ({ interaction, message }) => {
         console.log(`daily`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return daily(message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return daily(message, interaction)
-            }
-        }
+        return daily(message, interaction)
     }
 } as ICommand
 
@@ -87,12 +79,4 @@ function checkComma(coin: any) {
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

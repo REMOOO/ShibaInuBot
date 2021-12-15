@@ -1,5 +1,5 @@
 import { ICommand } from "wokcommands";
-import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
+import { MessageEmbed } from "discord.js";
 const getter = require("reddit-image-fetcher")
 
 export default {
@@ -8,25 +8,17 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message}) => {
+    callback: async () => {
         console.log(`shiba`)
 
         var { title, res } = await getImageFromReddit();
 
-        return shiba(interaction, channel, message, title, res)
+        return shiba(title, res)
     }
 } as ICommand
 
-function shiba(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, title: string, res: any) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createEmbed(title, res)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createEmbed(title, res)
-        }
-    }
+function shiba(title: string, res: any) {
+    return createEmbed(title, res)
 }
 
 function createEmbed(title: string, res: any) {
@@ -52,12 +44,4 @@ async function getImageFromReddit() {
         title = res[0].title;
     }
     return { title, res };
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

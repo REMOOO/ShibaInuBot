@@ -13,13 +13,11 @@ export default {
         console.log(`harvestweed`)
 
         if (!msgInt) {
-            if (botHasPermissionsMessage(channel, msg)) {
-                return harvestweedMsg(channel, msg)
-            }
+            return harvestweedMsg(channel, msg)
+
         } else {
-            if (botHasPermissionsInteraction(channel, msgInt)) {
-                return harvestweedInt(channel, msgInt)
-            }
+            return harvestweedInt(channel, msgInt)
+
         }
     }
 } as ICommand
@@ -214,12 +212,4 @@ async function harvestweedInt(channel: TextChannel, msgInt: CommandInteraction<C
             });
         }
     });
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

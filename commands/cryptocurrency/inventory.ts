@@ -9,18 +9,10 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message }) => {
+    callback: async ({ interaction, message }) => {
         console.log(`inventory`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return inventory(message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return inventory(message, interaction)
-            }
-        }
+        return inventory(message, interaction)
     }
 } as ICommand
 
@@ -54,13 +46,4 @@ async function createEmbed(user: User, data: any) {
         .setDescription(`**Weed:** ${weed}\n**Weed bags:** ${weedBags}`)
         .setColor("RANDOM");
     return embed;
-}
-
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

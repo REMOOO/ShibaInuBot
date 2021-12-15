@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, GuildMember, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -13,31 +13,22 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ message, channel, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`serveravatar`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         if (!target) {
-            return createOwnServerAvatarEmbed(interaction, channel, message)
+            return createOwnServerAvatarEmbed(interaction, message)
         } else {
-            return createTargetServerAvatarEmbed(target, channel, message, interaction)
+            return createTargetServerAvatarEmbed(target)
         }
     }
 } as ICommand
 
-async function createTargetServerAvatarEmbed(target: GuildMember, channel: TextChannel, message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const data = await getTargetData(target)
+async function createTargetServerAvatarEmbed(target: GuildMember) {
+    const data = await getTargetData(target)
             return createTargetServerAvatar(data, target)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const data = await getTargetData(target)
-            return createTargetServerAvatar(data, target)
-        }
-    }
 }
 
 function createTargetServerAvatar(data: { avatar: string | null | undefined; }, target: GuildMember) {
@@ -72,17 +63,15 @@ async function getTargetData(target: GuildMember) {
     }).then(d => d.data);
 }
 
-async function createOwnServerAvatarEmbed(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function createOwnServerAvatarEmbed(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             const data = await getDataMessage(message)
             return createOwnServerAvatarMessageEmbed(data, message)
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             const data = await getDataInteraction(interaction)
             return createOwnServerAvatarInteractionEmbed(data, interaction)
-        }
+        
     }
 }
 
@@ -148,12 +137,4 @@ async function getDataMessage(message: Message<boolean>) {
             Authorization: `Bot ${process.env.TOKEN}`
         }
     }).then(d => d.data);
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

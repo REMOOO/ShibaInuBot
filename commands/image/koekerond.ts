@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, TextChannel } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
@@ -12,32 +12,30 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`koekerond`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
-        await koekerond(target, interaction, channel, message)
+        await koekerond(target, interaction, message)
     }
 } as ICommand
 
-async function koekerond(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function koekerond(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousKoekerond(interaction, channel, message)
+        previousKoekerond(interaction, message)
     } else {
-        await targetKoekerond(interaction, channel, message, target)
+        await targetKoekerond(interaction, message, target)
     }
 }
 
-function previousKoekerond(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousKoekerond(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            previousMessage(message)
-        }
+        previousMessage(message)
+
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            previousInteraction(interaction)
-        }
+        previousInteraction(interaction)
+
     }
 }
 
@@ -64,8 +62,8 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
 
     ctx.beginPath()
     ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
-	ctx.closePath()
-	ctx.clip()
+    ctx.closePath()
+    ctx.clip()
     ctx.drawImage(image, 100, 85, 200, 200)
     return canvas;
 }
@@ -99,8 +97,8 @@ async function createInteractionCanvas(messages: Collection<string, Message<bool
 
     ctx.beginPath()
     ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
-	ctx.closePath()
-	ctx.clip()
+    ctx.closePath()
+    ctx.clip()
     ctx.drawImage(image, 100, 85, 200, 200)
     return canvas;
 }
@@ -113,18 +111,9 @@ function createInteraction(canvas: any, interaction: CommandInteraction<CacheTyp
     });
 }
 
-async function targetKoekerond(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const canvas = await createTargetCanvas(target)
-            createTarget(canvas, interaction, message)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const canvas = await createTargetCanvas(target)
-            createTarget(canvas, interaction, message)
-        }
-    }
+async function targetKoekerond(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
+    const canvas = await createTargetCanvas(target)
+    createTarget(canvas, interaction, message)
 }
 
 async function createTargetCanvas(target: GuildMember) {
@@ -144,8 +133,8 @@ async function createTargetCanvas(target: GuildMember) {
 
     ctx.beginPath()
     ctx.arc(200, 185, 100, 0, Math.PI * 2, true)
-	ctx.closePath()
-	ctx.clip()
+    ctx.closePath()
+    ctx.clip()
     ctx.drawImage(avatar, 100, 85, 200, 200)
     return canvas;
 }
@@ -160,12 +149,4 @@ function createTarget(canvas: any, interaction: CommandInteraction<CacheType>, m
             files: [attachment]
         });
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

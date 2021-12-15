@@ -13,30 +13,22 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ interaction, channel, message }) => {
+    callback: async ({ interaction, message }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         console.log(`balance`)
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return balance(target, message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return balance(target, message, interaction)
-            }
-        }
+        return balance(target, message, interaction)
     }
 } as ICommand
 
 async function balance(target: GuildMember | undefined, message: Message<boolean>, interaction: CommandInteraction<CacheType>) {
     let user = target?.user!
-    if(!user) user = message?.author
+    if (!user) user = message?.author
     if (!user) user = interaction?.user
     let data
 
     try {
-        data = await crypto.findOne({ userId: user.id})
+        data = await crypto.findOne({ userId: user.id })
         if (!data) data = await crypto.create({ userId: user.id })
     } catch (err) {
         console.log(err)
@@ -64,17 +56,9 @@ async function createEmbed(user: User, data: any) {
 }
 
 function checkComma(coin: any) {
-    if (coin.toString().substr(0,2) === "0.") {
+    if (coin.toString().substr(0, 2) === "0.") {
         return coin
     } else {
         return coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

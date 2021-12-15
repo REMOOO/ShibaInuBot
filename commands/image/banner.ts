@@ -3,7 +3,7 @@ import { ICommand } from "wokcommands";
 import axios from "axios"
 
 export default {
-    category : 'Image',
+    category: 'Image',
     description: 'Get the banner image of a user.',
     aliases: ['header'],
 
@@ -13,43 +13,34 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`banner`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 
         if (!target) {
-            return ownBanner(interaction, channel, message)
+            return ownBanner(interaction, message)
 
         } else {
-            return targetBanner(interaction, channel, message, target)
+            return targetBanner(target)
         }
     },
 } as ICommand
 
-function targetBanner(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
+function targetBanner(target: GuildMember) {
+    return createTargetEmbed(target)
+}
+
+function ownBanner(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createTargetEmbed(target)
-        }
+        return ownMessageBanner(message)
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createTargetEmbed(target)
-        }
+        return ownInteractionBanner(interaction)
     }
 }
 
-function ownBanner(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
-    if (!interaction) {
-        return ownMessageBanner(channel, message)
-    } else {
-        return ownInteractionBanner(channel, interaction)
-    }
-}
-
-async function ownInteractionBanner(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    if (botHasPermissionsInteraction(channel, interaction)) {
-        const data = await getUserDataInteraction(interaction)
+async function ownInteractionBanner(interaction: CommandInteraction<CacheType>) {
+    const data = await getUserDataInteraction(interaction)
 
     if (data.banner) {
         return createOwnInteractionEmbedPositive(data, interaction);
@@ -60,12 +51,11 @@ async function ownInteractionBanner(channel: TextChannel, interaction: CommandIn
             return createOwnInteractionEmbedNegative();
         }
     }
-    }
+
 }
 
-async function ownMessageBanner(channel: TextChannel, message: Message<boolean>) {
-    if (botHasPermissionsMessage(channel, message)) {
-        const data = await getUserDataMessage(message)
+async function ownMessageBanner(message: Message<boolean>) {
+    const data = await getUserDataMessage(message)
 
     if (data.banner) {
         return createOwnMessageEmbedPositive(data, message);
@@ -76,7 +66,7 @@ async function ownMessageBanner(channel: TextChannel, message: Message<boolean>)
             return createOwnMessageEmbedNegative();
         }
     }
-    }
+
 }
 
 function createOwnInteractionEmbedNegative() {
@@ -142,15 +132,15 @@ async function getUserDataMessage(message: Message<boolean>) {
 async function createTargetEmbed(target: GuildMember) {
     const data = await getTargetData(target)
 
-            if (data.banner) {
-                return createTargetEmbedPositive(data, target);
-            } else {
-                if (data.banner_color) {
-                    return createTargetEmbedNegativeDetail(target, data);
-                } else {
-                    return createTargetEmbedNegative(target);
-                }
-            }
+    if (data.banner) {
+        return createTargetEmbedPositive(data, target);
+    } else {
+        if (data.banner_color) {
+            return createTargetEmbedNegativeDetail(target, data);
+        } else {
+            return createTargetEmbedNegative(target);
+        }
+    }
 }
 
 function createTargetEmbedNegative(target: GuildMember) {
@@ -181,12 +171,4 @@ async function getTargetData(target: GuildMember) {
             Authorization: `Bot ${process.env.TOKEN}`
         }
     }).then(d => d.data);
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

@@ -1,4 +1,4 @@
-import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment, TextChannel } from "discord.js";
+import { CacheType, Collection, CommandInteraction, GuildMember, Message, MessageAttachment } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 
@@ -13,46 +13,35 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ channel, message, interaction }) => {
+    callback: async ({ message, interaction }) => {
         console.log(`space`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         
-        await space(target, interaction, channel, message);
+        await space(target, interaction, message);
     }
 } as ICommand
 
-async function space(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+async function space(target: GuildMember | undefined, interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!target) {
-        previousSpace(interaction, channel, message);
+        previousSpace(interaction, message);
     } else {
-        await targetSpace(interaction, channel, message, target);
+        await targetSpace(interaction, message, target);
     }
 }
 
-async function targetSpace(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            const canvas = await createTargetCanvas(target);
+async function targetSpace(interaction: CommandInteraction<CacheType>, message: Message<boolean>, target: GuildMember) {
+    const canvas = await createTargetCanvas(target);
             createTarget(canvas, interaction, message);
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            const canvas = await createTargetCanvas(target);
-            createTarget(canvas, interaction, message);
-        }
-    }
 }
 
-function previousSpace(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function previousSpace(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             previousMessage(message);
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             previousInteraction(interaction);
-        }
+        
     }
 }
 
@@ -149,12 +138,4 @@ async function createMessageCanvas(messages: Collection<string, Message<boolean>
 
     ctx.drawImage(space, canvas.width - 200, canvas.height - 70);
     return canvas;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

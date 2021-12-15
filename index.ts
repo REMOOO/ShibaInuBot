@@ -4,6 +4,7 @@ import WOKCommands from 'wokcommands'
 import path from 'path'
 import dotenv from 'dotenv'
 const music = require("@koenie06/discord.js-music")
+const Errorhandler = require("discord-error-handler")
 dotenv.config()
 
 const client = new DiscordJS.Client({
@@ -15,13 +16,12 @@ const client = new DiscordJS.Client({
     ]
 })
 
+const handle = new Errorhandler(client, {
+    webhook: {id: '914195557529047120', token: process.env.TOKEN}
+})
+
 client.on('ready', () => {
-    const guilds = [""]
-    client.guilds.cache.forEach(guild => {
-        guilds.push(guild.name)
-    })
-    console.log(guilds)
-    console.log(`Count servers: ${guilds.length - 1}`)
+    console.log(`Count servers: ${client.guilds.cache.size}`)
 
     new WOKCommands(client, {
         commandsDir: path.join(__dirname, 'commands'),
@@ -91,14 +91,28 @@ client.on('ready', () => {
     })
 
     setInterval(() => {
-        const guildsInt = [""]
-        client.guilds.cache.forEach(guild => {
-            guildsInt.push(guild.name)
-        })
-        if(guildsInt) {
-            client.user?.setActivity(`$help | barking in ${guildsInt.length - 1} servers`, {type: 'PLAYING'})
-        }
+        client.user?.setActivity(`$help | barking in ${client.guilds.cache.size} servers`, {type: 'PLAYING'})
   }, 1000 * 60 * 5);
+  
+})
+
+client.on('messageCreate', async message =>{
+    try {
+        if (message.author.bot) return
+    }catch(err){
+        handle.createrr(client, message.guild?.id, message.content, err)
+    }
+})
+
+client.on('interactionCreate', async interaction => {
+    try {
+        if (interaction.user.bot) return
+    }catch(err){
+        handle.createrr(client, interaction.guild?.id, interaction.applicationId, err)
+    }
 })
 
 client.login(process.env.TOKEN)
+process.on('unhandledRejection', err => {
+    handle.createrr(client,undefined, undefined, err)
+})

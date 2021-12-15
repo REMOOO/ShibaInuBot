@@ -21,7 +21,7 @@ export default {
         if (!target) {
             return ownServerBanner(interaction, channel, message)
         } else {
-            return targetServerBanner(interaction, channel, message, target)
+            return targetServerBanner(target)
         }
     },
 } as ICommand
@@ -35,7 +35,6 @@ function ownServerBanner(interaction: CommandInteraction<CacheType>, channel: Te
 }
 
 async function ownMessageServerBanner(channel: TextChannel, message: Message<boolean>) {
-    if (botHasPermissionsMessage(channel, message)) {
         const data = await getUserDataMessage(message)
         console.log(data)
         return "Will work when Discord fixes server banner data"
@@ -48,7 +47,6 @@ async function ownMessageServerBanner(channel: TextChannel, message: Message<boo
         //         return createOwnMessageEmbedNegative()
         //     }
         // }
-    }
 }
 
 async function getUserDataMessage(message: Message<boolean>) {
@@ -82,7 +80,6 @@ function createOwnMessageEmbedNegative() {
 }
 
 async function ownInteractionServerBanner(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    if (botHasPermissionsInteraction(channel, interaction)) {
         const data = await getUserDataInteraction(interaction)
 
         return "Will work when Discord fixes server banner data"
@@ -96,7 +93,6 @@ async function ownInteractionServerBanner(channel: TextChannel, interaction: Com
         //         return createOwnInteractionEmbedNegative()
         //     }
         // }
-    }
 }
 
 async function getUserDataInteraction(interaction: CommandInteraction<CacheType>) {
@@ -129,18 +125,9 @@ function createOwnInteractionEmbedNegativeDetail(data: any) {
     return embed;
 }
 
-function targetServerBanner(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return "Will work when Discord fixes server banner data"
+function targetServerBanner(target: GuildMember) {
+    return "Will work when Discord fixes server banner data"
             //return createTargetEmbed(target)
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return "Will work when Discord fixes server banner data"
-            //return createTargetEmbed(target)
-        }
-    }
 }
 
 async function createTargetEmbed(target: GuildMember) {
@@ -185,12 +172,4 @@ function createTargetEmbedPositive(data: any, target: GuildMember) {
         .setTitle(`Banner of ${target.user.username}`)
         .setImage(`https://cdn.discordapp.com/banners/${target.user.id}/${data.banner}${end}`);
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

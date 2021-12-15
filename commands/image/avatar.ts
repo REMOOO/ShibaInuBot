@@ -12,39 +12,29 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ channel, message, interaction }) => {
+    callback: ({ message, interaction }) => {
         console.log(`avatar`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         if (!target) {
-            return ownAvatar(interaction, channel, message)
+            return ownAvatar(interaction, message)
         } else {
-            return targetAvatar(interaction, channel, message, target)
+            return targetAvatar(target)
         }
     }
 } as ICommand
 
-function targetAvatar(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, target: GuildMember) {
-    if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
-            return createTargetEmbed(target);
-        }
-    } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
-            return createTargetEmbed(target);
-        }
-    }
+function targetAvatar(target: GuildMember) {
+    return createTargetEmbed(target);
 }
 
-function ownAvatar(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>) {
+function ownAvatar(interaction: CommandInteraction<CacheType>, message: Message<boolean>) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             return createOwnMessageEmbed(message);
-        }
+        
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             return createOwnInteractionEmbed(interaction);
-        }
+        
     }
 }
 
@@ -67,12 +57,4 @@ function createTargetEmbed(target: GuildMember) {
         .setTitle(`Avatar of ${target.user.username}`)
         .setImage(`${target.user.displayAvatarURL({ dynamic: true, size: 4096 })}`);
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }

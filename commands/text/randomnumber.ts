@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed, User } from "discord.js";
+import { CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -12,21 +12,13 @@ export default {
     expectedArgs: '<min> <max>',
     expectedArgsTypes: ['INTEGER', 'INTEGER'],
 
-    callback: async ({ args, interaction, channel, message }) => {
+    callback: async ({ args, interaction, message }) => {
         console.log(`randomnumber ${args[0]} ${args[1]}`)
 
         const min = parseInt(args[0])
         const max = parseInt(args[1])
 
-        if (!interaction) {
-            if (botHasPermissionsMessage(channel, message)) {
-                return randomnumber(min, max, message, interaction)
-            }
-        } else {
-            if (botHasPermissionsInteraction(channel, interaction)) {
-                return randomnumber(min, max, message, interaction)
-            }
-        }
+        return randomnumber(min, max, message, interaction)
     }
 } as ICommand
 
@@ -60,12 +52,4 @@ async function createEmbed(min: number, max: number, random: number) {
         .setDescription(`${random}`)
         .setColor("RANDOM");
     return embed;
-}
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
 }
