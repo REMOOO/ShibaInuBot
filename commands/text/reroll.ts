@@ -15,7 +15,7 @@ export default {
     maxArgs: 1,
 
     callback: async ({ guild, args, channel }) => {
-        console.log(`reroll ${args[0]}`)
+        console.log(`reroll ${args[0]} in ${guild?.name}`)
 
         const winnersCount = args[0]
 

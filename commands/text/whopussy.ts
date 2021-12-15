@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,26 +7,22 @@ export default {
 
     slash: 'both',
 
-    callback: ({ message, interaction, channel }) => {
-        console.log(`whopussy`)
+    callback: ({ guild, message, interaction }) => {
+        console.log(`whopussy in ${guild?.name}`)
 
         let randomUser
         let randomGetsNoPussy
-        return whopussy(interaction, channel, message, randomUser, randomGetsNoPussy)
+        return whopussy(interaction, message, randomUser, randomGetsNoPussy)
     }
 } as ICommand
 
-function whopussy(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, randomUser: undefined, randomGetsNoPussy: undefined) {
+function whopussy(interaction: CommandInteraction<CacheType>, message: Message<boolean>, randomUser: undefined, randomGetsNoPussy: undefined) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             ({ randomUser, randomGetsNoPussy } = getRandomUserMessage(randomUser, message, randomGetsNoPussy))
             return createEmbed(randomUser, randomGetsNoPussy)
-        }
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             ({ randomUser, randomGetsNoPussy } = getRandomUserInteraction(randomUser, interaction, randomGetsNoPussy));
             return createEmbed(randomUser, randomGetsNoPussy)
-        }
     }
 }
 function createEmbed(randomUser: any, randomGetsNoPussy: any) {
@@ -64,12 +60,3 @@ function getRandomUserMessage(randomUser: any, message: Message<boolean>, random
     }
     return { randomUser, randomGetsNoPussy };
 }
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
-}
-

@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`playboicarti`)
+    callback: async ({guild}) => {
+        console.log(`playboicarti in ${guild?.name}`)
 
         var { title, res } = await getImageFromReddit();
 

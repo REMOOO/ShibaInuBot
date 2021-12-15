@@ -7,8 +7,8 @@ export default {
 
     slash: 'both',
     
-    callback: async () => {
-        console.log(`pickupline`)
+    callback: async ({guild}) => {
+        console.log(`pickupline in ${guild?.name}`)
 
         return pickupline()
     },

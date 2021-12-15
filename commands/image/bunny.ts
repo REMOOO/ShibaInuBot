@@ -8,8 +8,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`bunny`)
+    callback: async ({guild}) => {
+        console.log(`bunny in ${guild?.name}`)
 
         var { title, res } = await getImageFromReddit();
 

@@ -11,8 +11,8 @@ export default {
     expectedArgs: '<volume>',
     expectedArgsTypes: ['INTEGER'],
 
-    callback: async ({ interaction, args }) => {
-        console.log(`volume ${args[0]}`)
+    callback: async ({ interaction, args, guild }) => {
+        console.log(`volume ${args[0]} in ${guild?.name}`)
 
         const volume  = interaction.options.getInteger("volume")!
 

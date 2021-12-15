@@ -11,8 +11,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, message }) => {
-        console.log(`daily`)
+    callback: async ({ interaction, message, guild }) => {
+        console.log(`daily in ${guild?.name}`)
 
         return daily(message, interaction)
     }

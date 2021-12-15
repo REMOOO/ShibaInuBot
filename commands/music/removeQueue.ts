@@ -11,8 +11,8 @@ export default {
     expectedArgs: '<number>',
     expectedArgsTypes: ['INTEGER'],
 
-    callback: async({ interaction, args })=> {
-        console.log(`removequeue ${args[0]}`)
+    callback: async({ interaction, args, guild })=> {
+        console.log(`removequeue ${args[0]} in ${guild?.name}`)
 
         const number = interaction.options.getInteger("number")!
 

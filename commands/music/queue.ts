@@ -6,8 +6,8 @@ export default {
     description: "Get the queue. This only works as a slash command.",
 
     slash: true,
-    callback: async ({ interaction }) => {
-        console.log(`queue`)
+    callback: async ({ interaction, guild }) => {
+        console.log(`queue in ${guild?.name}`)
 
         const isConnected = await music.isConnected({
             interaction: interaction

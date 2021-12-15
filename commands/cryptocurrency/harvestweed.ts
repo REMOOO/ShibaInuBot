@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ message: msg, interaction: msgInt, channel }) => {
-        console.log(`harvestweed`)
+    callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
+        console.log(`harvestweed in ${guild?.name}`)
 
         if (!msgInt) {
             return harvestweedMsg(channel, msg)

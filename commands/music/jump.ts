@@ -11,8 +11,8 @@ export default {
     expectedArgs: '<number>',
     expectedArgsTypes: ['INTEGER'],
 
-    callback: async ({ args, interaction }) => {
-        console.log(`jump ${args[0]}`)
+    callback: async ({ args, interaction, guild }) => {
+        console.log(`jump ${args[0]} in ${guild?.name}`)
 
         const number = interaction.options.getInteger("number")!
 

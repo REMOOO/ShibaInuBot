@@ -11,8 +11,8 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction }) => {
-        console.log(`eboyrate`)
+    callback: ({ message, interaction, guild }) => {
+        console.log(`eboyrate in ${guild?.name}`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

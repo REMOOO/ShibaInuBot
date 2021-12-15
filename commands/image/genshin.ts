@@ -8,8 +8,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`genshin`)
+    callback: async ({guild}) => {
+        console.log(`genshin in ${guild?.name}`)
 
         var { title, res } = await getImageFromReddit();
 

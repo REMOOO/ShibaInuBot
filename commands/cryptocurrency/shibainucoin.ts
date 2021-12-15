@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, channel, message }) => {
-        console.log(`shibainucoin`)
+    callback: async ({ guild }) => {
+        console.log(`shibainucoin in ${guild?.name}`)
 
         return shibainucoin()
     }

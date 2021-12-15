@@ -13,8 +13,8 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ message, interaction, args }) => {
-        console.log(`lyrics ${args[0]}`)
+    callback: async ({ message, interaction, args, guild }) => {
+        console.log(`lyrics ${args[0]} in ${guild?.name}`)
 
         let song
         if (!interaction) {

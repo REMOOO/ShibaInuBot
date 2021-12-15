@@ -6,8 +6,8 @@ export default {
     description: "Resume a song. This only works as a slash command.",
 
     slash: true,
-    callback: async ({ interaction }) => {
-        console.log(`resume`)
+    callback: async ({ interaction, guild }) => {
+        console.log(`resume in ${guild?.name}`)
 
         const isConnected = await music.isConnected({
             interaction: interaction

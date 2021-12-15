@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ message: msg, interaction: msgInt, channel }) => {
-        console.log(`cutweed`)
+    callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
+        console.log(`cutweed in ${guild?.name}`)
 
         if (!msgInt) {
             return cutweedMsg(channel, msg)

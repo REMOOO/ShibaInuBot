@@ -12,8 +12,8 @@ export default {
     expectedArgs: '<min> <max>',
     expectedArgsTypes: ['INTEGER', 'INTEGER'],
 
-    callback: async ({ args, interaction, message }) => {
-        console.log(`randomnumber ${args[0]} ${args[1]}`)
+    callback: async ({ args, interaction, message, guild }) => {
+        console.log(`randomnumber ${args[0]} ${args[1]} in ${guild?.name}`)
 
         const min = parseInt(args[0])
         const max = parseInt(args[1])

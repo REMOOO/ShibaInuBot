@@ -12,8 +12,8 @@ export default {
     minArgs: 1,
     maxArgs: 1,
 
-    callback: async ({ args }) => {
-        console.log(`astronomy ${args[0]}`)
+    callback: async ({ args, guild }) => {
+        console.log(`astronomy ${args[0]} in ${guild?.name}`)
 
         return astronomy(args)
     }

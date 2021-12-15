@@ -14,8 +14,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ message, channel, args }) => {
-        console.log(`purge ${args[0]}`)
+    callback: async ({ message, channel, args, guild }) => {
+        console.log(`purge ${args[0]} in ${guild?.name}`)
 
         if (parseInt(args[0]) > 100) {
             return "Value should be less than or equal to 100."

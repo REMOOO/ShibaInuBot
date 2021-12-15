@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction, message }) => {
-        console.log(`inventory`)
+    callback: async ({ interaction, message, guild }) => {
+        console.log(`inventory in ${guild?.name}`)
 
         return inventory(message, interaction)
     }

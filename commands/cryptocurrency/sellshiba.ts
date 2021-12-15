@@ -15,8 +15,8 @@ export default {
     expectedArgs: '<shibainucoins>',
     expectedArgsTypes: ['NUMBER'],
 
-    callback: async ({ args, interaction, message }) => {
-        console.log(`sellshiba ${args[0]}`)
+    callback: async ({ args, interaction, message, guild }) => {
+        console.log(`sellshiba ${args[0]} in ${guild?.name}`)
 
         const shibainucoins = Number(args[0])
 

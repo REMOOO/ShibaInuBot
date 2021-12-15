@@ -8,8 +8,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`cat`)
+    callback: async ({guild}) => {
+        console.log(`cat in ${guild?.name}`)
 
         var { title, res } = await getImageFromReddit();
 

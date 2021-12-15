@@ -1,4 +1,4 @@
-import { TextChannel, CommandInteraction, CacheType, Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 const fetch = require('axios')
 
@@ -12,8 +12,8 @@ export default {
     minArgs: 2,
     maxArgs: 2,
 
-    callback: async ({ args, interaction }) => {
-        console.log(`convert ${args[0]} ${args[1]}`)
+    callback: async ({ args, guild }) => {
+        console.log(`convert ${args[0]} ${args[1]} in ${guild?.name}`)
 
         return convert(args)
     }

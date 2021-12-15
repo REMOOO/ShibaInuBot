@@ -11,8 +11,8 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction, channel }) => {
-        console.log(`stankrate`)
+    callback: ({ message, interaction, guild }) => {
+        console.log(`stankrate in ${guild?.name}`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

@@ -6,8 +6,8 @@ export default {
     description: "Skip a song. This only works as a slash command.",
 
     slash: true,
-    callback: async ({ interaction }) => {
-        console.log(`skip`)
+    callback: async ({ interaction, guild }) => {
+        console.log(`skip in ${guild?.name}`)
 
         const isConnected = await music.isConnected({
             interaction: interaction

@@ -6,8 +6,8 @@ export default {
     description: "Stop a song. This only works as a slash command.",
 
     slash: true,
-    callback: async ({ interaction }) => {
-        console.log(`stop`)
+    callback: async ({ interaction, guild }) => {
+        console.log(`stop in ${guild?.name}`)
 
         const isConnected = await music.isConnected({
             interaction: interaction

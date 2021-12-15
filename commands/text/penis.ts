@@ -12,8 +12,8 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: ({ message, interaction }) => {
-        console.log(`penis`)
+    callback: ({ message, interaction, guild }) => {
+        console.log(`penis in ${guild?.name}`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
         return penis(target)

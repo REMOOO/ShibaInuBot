@@ -8,8 +8,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ message: msg, interaction: msgInt, channel, }) => {
-        console.log(`sellweed`)
+    callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
+        console.log(`sellweed in ${guild?.name}`)
 
         if (!msgInt) {
             return sellweedMsg(channel, msg)

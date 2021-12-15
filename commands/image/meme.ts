@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`meme`)
+    callback: async ({guild}) => {
+        console.log(`meme in ${guild?.name}`)
 
         var { title, res } = await getImageFromReddit();
 

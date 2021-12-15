@@ -7,8 +7,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ message: msg, interaction: msgInt, channel }) => {
-        console.log(`fortune`)
+    callback: async ({ message: msg, interaction: msgInt, channel, guild }) => {
+        console.log(`fortune in ${guild?.name}`)
 
         if (!msgInt) {
             await fortuneMsg(msg, channel)

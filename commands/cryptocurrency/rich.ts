@@ -9,7 +9,7 @@ export default {
     slash: 'both',
 
     callback: async ({ guild, interaction, channel, message }) => {
-        console.log(`rich`)
+        console.log(`rich in ${guild?.name}`)
 
         return rich(message, interaction, guild, channel)
 

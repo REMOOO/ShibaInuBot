@@ -15,8 +15,8 @@ export default {
     expectedArgs: '<dollars>',
     expectedArgsTypes: ['NUMBER'],
 
-    callback: async ({ args, interaction, message }) => {
-        console.log(`buybitcoin ${args[0]}`)
+    callback: async ({ args, interaction, message, guild }) => {
+        console.log(`buybitcoin ${args[0]} in ${guild?.name}`)
 
         const dollars = Number(args[0])
 

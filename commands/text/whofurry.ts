@@ -7,8 +7,8 @@ export default {
 
     slash: 'both',
 
-    callback: ({ message, interaction }) => {
-        console.log(`whofurry`)
+    callback: ({ message, interaction, guild }) => {
+        console.log(`whofurry in ${guild?.name}`)
 
         let randomUser
         let randomFurryHater

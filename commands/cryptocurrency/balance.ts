@@ -13,9 +13,9 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ interaction, message }) => {
+    callback: async ({ interaction, message, guild }) => {
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
-        console.log(`balance`)
+        console.log(`balance in ${guild?.name}`)
 
         return balance(target, message, interaction)
     }

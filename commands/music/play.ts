@@ -12,8 +12,8 @@ export default {
     expectedArgs: '<song>',
     expectedArgsTypes: ['STRING'],
 
-    callback: async ({ args, interaction }) => {
-        console.log(`play ${args[0]}`)
+    callback: async ({ args, interaction, guild }) => {
+        console.log(`play ${args[0]} in ${guild?.name}`)
 
         const song = interaction.options.getString("song") as string
         const member = interaction.guild?.members.cache.get(interaction.member.user.id)

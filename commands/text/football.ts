@@ -8,8 +8,8 @@ export default {
 
     slash: 'both',
 
-    callback: async () => {
-        console.log(`football`)
+    callback: async ({guild}) => {
+        console.log(`football in ${guild?.name}`)
 
         return football()
     }

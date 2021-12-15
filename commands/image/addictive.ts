@@ -12,8 +12,8 @@ export default {
     expectedArgs: '<user>',
     expectedArgsTypes: ['USER'],
 
-    callback: async ({ message, interaction }) => {
-        console.log(`addictive`)
+    callback: async ({ message, interaction, guild }) => {
+        console.log(`addictive in ${guild?.name}`)
 
         const target = message ? message.mentions.members?.first() : interaction.options.getMember('user') as GuildMember
 

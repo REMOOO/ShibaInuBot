@@ -11,8 +11,8 @@ export default {
     minArgs: 2,
     maxArgs: 2,
 
-    callback: ({ args }) => {
-        console.log(`add ${args[0]} ${args[1]}`)
+    callback: ({ args, guild }) => {
+        console.log(`add ${args[0]} ${args[1]} in ${guild?.name}`)
 
         const number1 = parseInt(args[0])
         const number2 = parseInt(args[1])

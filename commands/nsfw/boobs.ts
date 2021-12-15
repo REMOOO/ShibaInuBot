@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ channel }) => {
-        console.log(`boobs`)
+    callback: async ({ channel, guild }) => {
+        console.log(`boobs in ${guild?.name}`)
 
         if (!channel.nsfw) {
             return "🔞 This command can only be used in NSFW channels."

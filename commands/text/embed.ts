@@ -13,8 +13,8 @@ export default {
     expectedArgs: '<title> [description]',
     expectedArgsTypes: ['STRING', 'STRING'],
 
-    callback: async ({ message, interaction, channel, args }) => {
-        console.log(`embed ${args[0]} ${args[1]}`)
+    callback: async ({ message, interaction, channel, args, guild }) => {
+        console.log(`embed ${args[0]} ${args[1]} in ${guild?.name}`)
 
         await embed(interaction, channel, message, args);
     }

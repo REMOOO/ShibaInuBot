@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel } from "discord.js";
+import { CacheType, CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,25 +7,21 @@ export default {
 
     slash: 'both',
 
-    callback: ({ message, interaction, channel }) => {
-        console.log(`whosus`)
+    callback: ({ guild, message, interaction }) => {
+        console.log(`whosus in ${guild?.name}`)
 
         let randomUser
-        return whosus(interaction, channel, message, randomUser)
+        return whosus(interaction, message, randomUser)
     }
 } as ICommand
 
-function whosus(interaction: CommandInteraction<CacheType>, channel: TextChannel, message: Message<boolean>, randomUser: undefined) {
+function whosus(interaction: CommandInteraction<CacheType>, message: Message<boolean>, randomUser: undefined) {
     if (!interaction) {
-        if (botHasPermissionsMessage(channel, message)) {
             ({ randomUser } = getRandomUserMessage(randomUser, message))
             return createEmbed(randomUser)
-        }
     } else {
-        if (botHasPermissionsInteraction(channel, interaction)) {
             ({ randomUser } = getRandomUserInteraction(randomUser, interaction));
             return createEmbed(randomUser)
-        }
     }
 }
 function createEmbed(randomUser: any) {
@@ -52,12 +48,3 @@ function getRandomUserMessage(randomUser: any, message: Message<boolean>) {
     }
     return { randomUser };
 }
-
-function botHasPermissionsInteraction(channel: TextChannel, interaction: CommandInteraction<CacheType>) {
-    return channel.permissionsFor(interaction.guild?.me!).has("SEND_MESSAGES");
-}
-
-function botHasPermissionsMessage(channel: TextChannel, message: Message<boolean>) {
-    return channel.permissionsFor(message.guild?.me!).has("SEND_MESSAGES");
-}
-

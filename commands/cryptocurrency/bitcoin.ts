@@ -9,8 +9,8 @@ export default {
 
     slash: 'both',
 
-    callback: async ({ interaction }) => {
-        console.log(`bitcoin`)
+    callback: async ({ interaction, guild }) => {
+        console.log(`bitcoin in ${guild?.name}`)
 
         return bitcoin()
     }
