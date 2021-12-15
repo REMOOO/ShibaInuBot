@@ -17,7 +17,7 @@ const client = new DiscordJS.Client({
 })
 
 const handle = new Errorhandler(client, {
-    webhook: {id: '914195557529047120', token: process.env.TOKEN}
+    webhook: {id: process.env.WEBHOOK_ID, token: process.env.WEBHOOK_TOKEN}
 })
 
 client.on('ready', () => {
@@ -98,7 +98,7 @@ client.on('ready', () => {
 
 client.on('messageCreate', async message =>{
     try {
-        if (message.author.bot) return
+        if (message.author.bot) return;
     }catch(err){
         handle.createrr(client, message.guild?.id, message.content, err)
     }
@@ -106,7 +106,7 @@ client.on('messageCreate', async message =>{
 
 client.on('interactionCreate', async interaction => {
     try {
-        if (interaction.user.bot) return
+        if (interaction.user.bot) return;
     }catch(err){
         handle.createrr(client, interaction.guild?.id, interaction.applicationId, err)
     }
