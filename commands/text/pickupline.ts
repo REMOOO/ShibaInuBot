@@ -1,5 +1,7 @@
 import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
+const redditFetch = require('reddit-fetch')
+
 
 export default {
     category: 'Text',
@@ -14,7 +16,13 @@ export default {
             .setColor('GREEN')
         await webhook.send({embeds: [embed]})
 
-        return pickupline()
+        const random = Math.floor(Math.random() * 2)
+
+        if (random === 0) {
+            return pickupline()
+        } else {
+            return redditPickupline()
+        }
     },
 } as ICommand
 
@@ -113,6 +121,24 @@ const pickuplines = [
 async function pickupline() {
     const embed = new MessageEmbed()
         .setTitle(getRandomPickupline())
+        .setColor('RANDOM')
+    return embed
+}
+
+async function redditPickupline() {
+    const res = await redditFetch({
+
+        subreddit: 'pickuplines',
+        sort: 'hot',
+        allowNSFW: true
+    
+    })
+
+    const title = res.title
+    const desc = res.selftext
+    const embed = new MessageEmbed()
+        .setTitle(title)
+        .setDescription(desc)
         .setColor('RANDOM')
     return embed
 }
