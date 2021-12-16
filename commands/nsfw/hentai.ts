@@ -38,7 +38,23 @@ function createEmbed(title: string, res: any) {
 
 async function getImageFromReddit() {
     let subreddits = [
-        "hentai"
+        "hentai",
+        "ecchi",
+        "doujinshi",
+        "yurigif",
+        "oppai_gif",
+        "thighdeology",
+        "ahegao",
+        "MonsterGirl",
+        "hentaibondage",
+        "AnimeMILFS",
+        "Nekomimi",
+        "Paizuri",
+        "AnimeBooty",
+        "waifusgonewild",
+        "GameOverGirls",
+        "Sukebei",
+        "CumHentai"
     ];
 
     const res = await getter.fetch({
