@@ -1,4 +1,4 @@
-import { WebhookClient, MessageEmbed, User, CacheType, CommandInteraction } from "discord.js";
+import { WebhookClient, MessageEmbed, User } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
