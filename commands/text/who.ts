@@ -40,7 +40,7 @@ export default {
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
 
         const embed = new MessageEmbed()
-            .setTitle(`${subcommand} in ${guild?.name}`)
+            .setTitle(`who ${subcommand} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [embed] })
 
@@ -57,7 +57,7 @@ export default {
             return who(interaction, 'is the biggest pussy 😸', 'is the one who gets no pussy tho 💀')
 
         } else if (subcommand === 'sus') {
-            return who(interaction, 'is big sus ඞ🧐', '')
+            return who(interaction, 'is big sus ඞ🧐', 'loves minors tho')
         }
 
     }
@@ -78,6 +78,7 @@ async function who(interaction: CommandInteraction<CacheType>, userIsWhat: strin
     const embed = new MessageEmbed()
         .setTitle(`${randomUser.username} ${userIsWhat}`)
         .setDescription(`${randomOther.username} ${otherIsWhat}`)
-        .setThumbnail(randomUser.displayAvatarURL({ dynamic: true, size: 4096 }));
+        .setThumbnail(randomUser.displayAvatarURL({ dynamic: true, size: 4096 }))
+        .setColor('RANDOM')
         return embed
 }

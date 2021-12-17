@@ -151,7 +151,7 @@ export default {
             if (!user) user = interaction?.user
             
             const embed = new MessageEmbed()
-                .setTitle(`${subcommand} ${user.username} in ${guild?.name}`)
+                .setTitle(`rate ${subcommand} ${user.username} in ${guild?.name}`)
                 .setColor('GREEN')
             await webhook.send({ embeds: [embed] })
         } else {

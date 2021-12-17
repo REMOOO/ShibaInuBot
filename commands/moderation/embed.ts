@@ -2,7 +2,7 @@ import { CacheType, CommandInteraction, Message, MessageEmbed, TextChannel, Webh
 import { ICommand } from "wokcommands";
 
 export default {
-    category: 'Text',
+    category: 'Moderation',
     description: 'Sends an embed with a random color. Split title & description with comma (,).',
 
     permissions: ['ADMINISTRATOR'],

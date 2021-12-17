@@ -63,7 +63,7 @@ export default {
 
         if (subcommand !== 'number') {
             const embed = new MessageEmbed()
-            .setTitle(`${subcommand} in ${guild?.name}`)
+            .setTitle(`random ${subcommand} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [embed] })
         }
@@ -85,7 +85,7 @@ export default {
             const max = interaction.options.getInteger('max')!
 
             const embed = new MessageEmbed()
-            .setTitle(`${subcommand} ${min} ${max} in ${guild?.name}`)
+            .setTitle(`random ${subcommand} ${min} ${max} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [embed] })
 
