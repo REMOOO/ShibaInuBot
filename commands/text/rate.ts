@@ -144,52 +144,64 @@ export default {
 
     callback: async ({ guild, interaction }) => {
         const subcommand = interaction.options.getSubcommand()
-        const user = interaction.options.getUser('user')
+        let user = interaction.options.getUser('user')
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
-        const embed = new MessageEmbed()
-            .setTitle(`${subcommand} ${user?.username} in ${guild?.name}`)
+
+        if (subcommand !== 'ship') {
+            if (!user) user = interaction?.user
+            
+            const embed = new MessageEmbed()
+                .setTitle(`${subcommand} ${user.username} in ${guild?.name}`)
+                .setColor('GREEN')
+            await webhook.send({ embeds: [embed] })
+        } else {
+            if (!user) user = interaction.guild?.members.cache.random()?.user!;
+            const me = interaction.user
+
+            const embed = new MessageEmbed()
+            .setTitle(`${subcommand} ${me.username} ${user.username} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [embed] })
+        }
 
         if (subcommand === 'eboy') {
-            return rate(user!, interaction, subcommand, '⛓️💀🖤')
+            return rate(user, subcommand, '⛓️💀🖤')
 
         } else if (subcommand === 'egirl') {
-            return rate(user!, interaction, subcommand, '🥀💀🖤')
+            return rate(user, subcommand, '🥀💀🖤')
 
         } else if (subcommand === 'evil') {
-            return evilrate(user!, interaction)
+            return evilrate(user)
 
         } else if (subcommand === 'furry') {
-            return rate(user!, interaction, subcommand, '😻. UwU!')
+            return rate(user, subcommand, '😻. UwU!')
 
         } else if (subcommand === 'gay') {
-            return rate(user!, interaction, subcommand, '🏳️‍🌈')
+            return rate(user, subcommand, '🏳️‍🌈')
 
         } else if (subcommand === 'penis') {
-            return penisrate(user!, interaction)
+            return penisrate(user)
 
         } else if (subcommand === 'shiba') {
-            return rate(user!, interaction, subcommand, '🐕. Woof!')
+            return rate(user, subcommand, '🐕. Woof!')
 
         } else if (subcommand === 'ship') {
-            return ship(user!, interaction)
+            return ship(user, interaction.user)
             
         } else if (subcommand === 'stank') {
-            return rate(user!, interaction, 'stanky', '🤮')
+            return rate(user, 'stanky', '🤮')
 
         } else if (subcommand === 'thot') {
-            return rate(user!, interaction, subcommand, '😏')
+            return rate(user, subcommand, '😏')
 
         } else if (subcommand === 'waifu') {
-            return rate(user!, interaction, subcommand, '😍')
+            return rate(user, subcommand, '😍')
         }
     }
 } as ICommand
 
-async function rate(target: User, interaction: CommandInteraction<CacheType>, what: string, emoji: string) {
-    let user = target
-    if (!user) user = interaction?.user
+async function rate(target: User, what: string, emoji: string) {
+    const user = target
 
     const rating = Math.floor(Math.random() * 101)
 
@@ -199,9 +211,8 @@ async function rate(target: User, interaction: CommandInteraction<CacheType>, wh
     return embed
 }
 
-async function evilrate(target: User, interaction: CommandInteraction<CacheType>) {
-    let user = target
-    if (!user) user = interaction?.user
+async function evilrate(target: User) {
+    const user = target
 
     const rating = Math.floor(Math.random() * 101)
 
@@ -211,9 +222,8 @@ async function evilrate(target: User, interaction: CommandInteraction<CacheType>
     return embed
 }
 
-async function penisrate(target: User, interaction: CommandInteraction<CacheType>) {
-    let user = target
-    if (!user) user = interaction?.user
+async function penisrate(target: User) {
+    const user = target
 
     let penis = ""
     for (let i = 0; i<=Math.floor(Math.random() * 101);i++) {
@@ -227,10 +237,9 @@ async function penisrate(target: User, interaction: CommandInteraction<CacheType
     return embed
 }
 
-async function ship(target: User, interaction: CommandInteraction<CacheType>) {
-    let user = target
-    let me = interaction.user
-    if (!user) user = interaction.guild?.members.cache.random()?.user!;
+async function ship(target: User, userMe: User) {
+    const user = target
+    const me = userMe
 
     const shipness = Math.floor(Math.random() * 101)
     const shipIndex = Math.floor(shipness / 10)
