@@ -1,32 +1,4 @@
-import { MessageEmbed, WebhookClient } from "discord.js";
-import { ICommand } from "wokcommands";
-const redditFetch = require('reddit-fetch')
-
-
-export default {
-    category: 'Text',
-    description: 'Get a random pickupline.',
-
-    slash: 'both',
-    
-    callback: async ({guild}) => {
-        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
-        const embed = new MessageEmbed()
-            .setTitle(`pickupline in ${guild?.name}`)
-            .setColor('GREEN')
-        await webhook.send({embeds: [embed]})
-
-        const random = Math.floor(Math.random() * 2)
-
-        if (random === 0) {
-            return pickupline()
-        } else {
-            return redditPickupline()
-        }
-    },
-} as ICommand
-
-const pickuplines = [
+export const pickuplines = [
     "My mom told me that life was a deck of cards, so I guess you must be the queen of hearts.",
     "Mans so good at sliding into dms it left her speechless for a day. (Use this one if you're getting ignored)",
     "You put the sexy in dyslexic.",
@@ -117,33 +89,3 @@ const pickuplines = [
     "You dropped something: my jaw.",
     "Did you sit in sugar? Because you have a sweet ass."
 ]
-
-async function pickupline() {
-    const embed = new MessageEmbed()
-        .setTitle(getRandomPickupline())
-        .setColor('RANDOM')
-    return embed
-}
-
-async function redditPickupline() {
-    const res = await redditFetch({
-
-        subreddit: 'pickuplines',
-        sort: 'hot',
-        allowNSFW: true
-    
-    })
-
-    const title = res.title
-    const desc = res.selftext
-    const embed = new MessageEmbed()
-        .setTitle(title)
-        .setDescription(desc)
-        .setColor('RANDOM')
-    return embed
-}
-
-function getRandomPickupline() {
-    const random = Math.floor(Math.random() * pickuplines.length);
-    return pickuplines[random]
-}
