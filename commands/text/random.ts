@@ -57,20 +57,23 @@ export default {
         },
     ],
 
-    callback: async ({ guild, interaction, channel, args }) => {
+    callback: async ({ guild, interaction, channel }) => {
         const subcommand = interaction.options.getSubcommand()
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
-        const embed = new MessageEmbed()
+
+        if (subcommand !== 'number') {
+            const embed = new MessageEmbed()
             .setTitle(`${subcommand} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [embed] })
+        }
 
         if (subcommand === 'copypasta') {
             return random(subcommand)
 
         } else if (subcommand === 'emojipasta') {
             return random(subcommand)
-            
+
         } else if (subcommand === 'joke') {
             return random('jokes')
 
@@ -80,6 +83,11 @@ export default {
         } else if (subcommand === 'number') {
             const min = interaction.options.getInteger('min')!
             const max = interaction.options.getInteger('max')!
+
+            const embed = new MessageEmbed()
+            .setTitle(`${subcommand} ${min} ${max} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({ embeds: [embed] })
 
             return randomnumber(min, max)
         } else if (subcommand === "pickupline") {
