@@ -36,6 +36,7 @@
     "parse-ms-js": "^1.2.0",
     "reddit-fetch": "^1.5.1",
     "reddit-image-fetcher": "^2.0.9",
-    "wokcommands": "^1.5.3"
+    "wokcommands": "^1.5.3",
+    "ytdl-core": "^4.9.2"
   }
 }
