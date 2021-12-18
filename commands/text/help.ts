@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 
 export default {
@@ -7,7 +7,14 @@ export default {
 
     slash: true,
 
-    callback: async () => {
+    callback: async ({interaction, guild}) => {
+        const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
+
+        const xd = new MessageEmbed()
+            .setTitle(`help by ${interaction.user} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({ embeds: [xd] })
+
         const embed = new MessageEmbed()
             .setTitle(`Commands`)
             .setDescription(`Type the following commands in for more details.
