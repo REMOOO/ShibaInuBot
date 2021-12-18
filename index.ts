@@ -91,7 +91,7 @@ client.on('ready', () => {
     })
 
     setInterval(() => {
-        client.user?.setActivity(`$help | barking in ${client.guilds.cache.size} servers`, {type: 'PLAYING'})
+        client.user?.setActivity(`/help | barking in ${client.guilds.cache.size} servers`, {type: 'PLAYING'})
   }, 1000 * 60 * 5);
   
 })
