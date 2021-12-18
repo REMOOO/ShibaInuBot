@@ -11,7 +11,7 @@ export default {
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
 
         const xd = new MessageEmbed()
-            .setTitle(`help by ${interaction.user} in ${guild?.name}`)
+            .setTitle(`help by ${interaction.user.username} in ${guild?.name}`)
             .setColor('GREEN')
         await webhook.send({ embeds: [xd] })
 
