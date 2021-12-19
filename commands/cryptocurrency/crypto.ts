@@ -123,8 +123,8 @@ export default {
         let user = interaction.options.getUser('user')
         if (!user) user = interaction?.user
         const dollars = interaction.options.getNumber('dollars')
-        const currency1 = interaction.options.getNumber('currency1')
-        const currency2 = interaction.options.getNumber('currency2')
+        const currency1 = interaction.options.getString('currency1')
+        const currency2 = interaction.options.getString('currency2')
         const bitcoins = interaction.options.getNumber('bitcoins')
         const shibainucoins = interaction.options.getNumber('shibainucoins')
 
@@ -345,7 +345,7 @@ async function buyshiba(dollars: number, interaction: CommandInteraction<CacheTy
     }
 }
 
-async function convert(currency1: number, currency2: number) {
+async function convert(currency1: string, currency2: string) {
     let res
 
     try {
