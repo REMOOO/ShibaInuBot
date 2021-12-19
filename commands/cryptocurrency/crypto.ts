@@ -354,7 +354,7 @@ async function convert(currency1: string, currency2: string) {
         return "Currency doesn't exist"
     }
 
-    const data = res.data
+    const data = res.data[Object.keys(res.data)[0]]
 
     const coin = checkComma(data)
 
