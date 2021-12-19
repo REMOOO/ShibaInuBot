@@ -1,4 +1,4 @@
-import { CacheType, CommandInteraction, MessageEmbed, User, WebhookClient } from "discord.js";
+import { CacheType, CommandInteraction, Guild, MessageEmbed, User, WebhookClient } from "discord.js";
 import { ICommand } from "wokcommands";
 import axios from "axios";
 
@@ -65,41 +65,43 @@ export default {
         if (!user) user = interaction?.user
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
 
-        const embed = new MessageEmbed()
-            .setTitle(`avatar ${subcommand} ${user.username} in ${guild?.name}`)
-            .setColor('GREEN')
-        await webhook.send({ embeds: [embed] })
-
         if (subcommand === 'get') {
-            return avatar(user)
+            return avatar(user, webhook, guild)
 
         } else if (subcommand === 'server') {
-            return serveravatar(user, interaction)
+            return serveravatar(user, interaction, webhook, guild)
 
         } else if (subcommand === 'banner') {
-            return banner(user)
+            return banner(user, guild, webhook)
 
         } else if (subcommand === 'serverbanner') {
-            return serverbanner(user)
+            return serverbanner(user, webhook, guild)
 
         }
     }
 } as ICommand
 
-async function avatar(target: User) {
+async function avatar(target: User, webhook: WebhookClient, guild: Guild | null) {
     const data = await axios.get(`https://discord.com/api/users/${target.id}`, {
         headers: {
             Authorization: `Bot ${process.env.TOKEN}`
         }
     }).then(d => d.data);
     let url = data.avatar.startsWith("a_") ? ".gif?size=4096" : ".png?size=4096";
+
+    const xd = new MessageEmbed()
+        .setTitle(`avatar get ${target.username} in ${guild?.name}`)
+        .setColor('GREEN')
+        .setImage(`https://cdn.discordapp.com/avatars/${target.id}/${data.avatar}${url}`)
+    await webhook.send({ embeds: [xd] })
+
     const embed = new MessageEmbed()
         .setTitle(`Avatar of ${target.username}`)
         .setImage(`https://cdn.discordapp.com/avatars/${target.id}/${data.avatar}${url}`);
-        return embed;
+    return embed;
 }
 
-async function serveravatar(target: User, interaction: CommandInteraction<CacheType>) {
+async function serveravatar(target: User, interaction: CommandInteraction<CacheType>, webhook: WebhookClient, guild: Guild | null) {
     const data = await axios.get(`https://discord.com/api/guilds/${interaction.guildId}/members/${target.id}`, {
         headers: {
             Authorization: `Bot ${process.env.TOKEN}`
@@ -109,11 +111,22 @@ async function serveravatar(target: User, interaction: CommandInteraction<CacheT
     if (data.avatar !== undefined && data.avatar !== null) {
         let end = data.avatar.startsWith("a_") ? ".gif?size=4096" : ".png?size=4096"
 
+        const xd = new MessageEmbed()
+            .setTitle(`avatar server ${target.username} in ${guild?.name}`)
+            .setColor('GREEN')
+            .setImage(`https://cdn.discordapp.com/guilds/${interaction.guildId}/users/${target.id}/avatars/${data.avatar}${end}`)
+        await webhook.send({ embeds: [xd] })
+
         const embed = new MessageEmbed()
             .setTitle(`Server avatar of ${target.username}`)
             .setImage(`https://cdn.discordapp.com/guilds/${interaction.guildId}/users/${target.id}/avatars/${data.avatar}${end}`);
         return embed;
     } else {
+        const xd = new MessageEmbed()
+            .setTitle(`avatar server ${target.username} in ${guild?.name}`)
+            .setColor('GREEN')
+        await webhook.send({ embeds: [xd] })
+
         const embed = new MessageEmbed()
             .setTitle(`${target.username} doesn't have a server avatar 🙄`)
             .setDescription(`Anyway, this is the global avatar of ${target.username}`)
@@ -122,7 +135,7 @@ async function serveravatar(target: User, interaction: CommandInteraction<CacheT
     }
 }
 
-async function banner(target: User) {
+async function banner(target: User, guild: Guild | null, webhook: WebhookClient) {
     const data = await axios.get(`https://discord.com/api/users/${target.id}`, {
         headers: {
             Authorization: `Bot ${process.env.TOKEN}`
@@ -131,18 +144,34 @@ async function banner(target: User) {
 
     if (data.banner) {
         let url = data.banner.startsWith("a_") ? ".gif?size=4096" : ".png?size=4096";
+        const xd = new MessageEmbed()
+            .setTitle(`avatar banner ${target.username} in ${guild?.name}`)
+            .setColor('GREEN')
+            .setImage(`https://cdn.discordapp.com/banners/${target.id}/${data.banner}${url}`)
+        await webhook.send({ embeds: [xd] })
+
         const embed = new MessageEmbed()
             .setTitle(`Banner of ${target.username}`)
             .setImage(`https://cdn.discordapp.com/banners/${target.id}/${data.banner}${url}`);
         return embed;
     } else {
         if (data.banner_color) {
+            const xd = new MessageEmbed()
+                .setTitle(`avatar banner ${target.username} in ${guild?.name}`)
+                .setColor(data.banner_color)
+            await webhook.send({ embeds: [xd] })
+
             const embed = new MessageEmbed()
                 .setTitle(`${target.username} doesn't have a banner 🙄`)
                 .setDescription(`Anyway, the banner color of ${target.username} is ${data.banner_color}`)
                 .setColor(data.banner_color);
             return embed;
         } else {
+            const xd = new MessageEmbed()
+                .setTitle(`avatar server ${target.username} in ${guild?.name}`)
+                .setColor('GREEN')
+            await webhook.send({ embeds: [xd] })
+
             const embed = new MessageEmbed()
                 .setTitle(`${target.username} doesn't have a banner 🙄`);
             return embed;
@@ -150,6 +179,11 @@ async function banner(target: User) {
     }
 }
 
-async function serverbanner(target: User) {
+async function serverbanner(target: User, webhook: WebhookClient, guild: Guild | null) {
+    const xd = new MessageEmbed()
+        .setTitle(`avatar serverbanner ${target.username} in ${guild?.name}`)
+        .setColor('GREEN')
+    await webhook.send({ embeds: [xd] })
+
     return "Will work when Discord fixes server banner data"
 }
