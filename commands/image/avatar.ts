@@ -87,10 +87,16 @@ export default {
 } as ICommand
 
 async function avatar(target: User) {
+    const data = await axios.get(`https://discord.com/api/users/${target.id}`, {
+        headers: {
+            Authorization: `Bot ${process.env.TOKEN}`
+        }
+    }).then(d => d.data);
+    let url = data.avatar.startsWith("a_") ? ".gif?size=4096" : ".png?size=4096";
     const embed = new MessageEmbed()
         .setTitle(`Avatar of ${target.username}`)
-        .setImage(`${target.displayAvatarURL({ dynamic: true, size: 4096 })}`);
-    return embed;
+        .setImage(`https://cdn.discordapp.com/avatars/${target.id}/${data.avatar}${url}`);
+        return embed;
 }
 
 async function serveravatar(target: User, interaction: CommandInteraction<CacheType>) {
