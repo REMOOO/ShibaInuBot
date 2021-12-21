@@ -29,6 +29,31 @@ export default {
             name: 'shiba',
             description: 'Get an image of a cute shiba inu.'
         },
+        {
+            type: 'SUB_COMMAND',
+            name: 'aww',
+            description: 'Animals that make you go AWW!'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'snake',
+            description: 'Get an image of a cute snake.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'parrot',
+            description: 'Get an image of a cute parrot.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'pig',
+            description: 'Get an image of a cute pig.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'nature',
+            description: 'Get an image of nature.'
+        }
     ],
 
     callback: async ({ guild, interaction }) => {
@@ -57,7 +82,8 @@ export default {
         } else if (subcommand === 'dog') {
             const subreddits = [
                 "lookatmydog",
-                "dogpictures"
+                "dogpictures",
+                "rarepuppers"
             ]
             return animal(subreddits, subcommand)
 
@@ -67,6 +93,38 @@ export default {
             ]
             return animal(subreddits, subcommand)
 
+        } else if (subcommand === 'aww') {
+            const subreddits = [
+                "aww"
+            ]
+            return animal(subreddits, subcommand)
+
+        } else if (subcommand === 'snake') {
+            const subreddits = [
+                "sneks"
+            ]
+            return animal(subreddits, subcommand)
+
+        } else if (subcommand === 'parrot') {
+            const subreddits = [
+                "PartyParrot",
+                "parrots"
+            ]
+            return animal(subreddits, subcommand)
+
+        } else if (subcommand === 'pig') {
+            const subreddits = [
+                "pigs",
+                "Pigifs"
+            ]
+            return animal(subreddits, subcommand)
+
+        } else if (subcommand === 'nature') {
+            const subreddits = [
+                "NatureIsFuckingLit"
+            ]
+            return animal(subreddits, subcommand)
+            
         }
     }
 } as ICommand
