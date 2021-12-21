@@ -55,6 +55,31 @@ export default {
             name: 'pickupline',
             description: 'Get a random pickupline.'
         },
+        {
+            type: 'SUB_COMMAND',
+            name: 'showerthought',
+            description: 'Get a random showerthought.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'quote',
+            description: 'Get a random quote.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'question',
+            description: 'Get a random question.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'news',
+            description: 'Get random news.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'science',
+            description: 'Get a random scientific research.'
+        }
     ],
 
     callback: async ({ guild, interaction, channel }) => {
@@ -98,6 +123,20 @@ export default {
             } else {
                 return random('pickuplines')
             }
+        } else if (subcommand === "showerthought") {
+            return random('showerthoughts')
+
+        } else if (subcommand === "quote") {
+            return random('quotes')
+
+        } else if (subcommand === 'question') {
+            return random('askreddit')
+
+        } else if (subcommand === 'news') {
+            return randomNews('worldnews')
+
+        } else if (subcommand === 'science') {
+            return randomNews('science')
         }
     },
 } as ICommand
@@ -114,6 +153,30 @@ async function random(subject: string) {
 
     const title = res.title
     const desc = res.selftext
+
+    try {
+        const embed = new MessageEmbed()
+            .setTitle(title)
+            .setDescription(desc)
+            .setColor('RANDOM')
+        return embed
+    } catch (err) {
+        return `Found ${subject} was too long... Try again.`
+        
+    }
+}
+
+async function randomNews(subject: string) {
+    const res = await redditFetch({
+
+        subreddit: subject,
+        sort: 'hot',
+        allowNSFW: true
+
+    })
+
+    const title = res.title
+    const desc = res.url
 
     try {
         const embed = new MessageEmbed()
