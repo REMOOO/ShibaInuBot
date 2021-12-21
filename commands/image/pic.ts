@@ -28,6 +28,41 @@ export default {
             type: 'SUB_COMMAND',
             name: 'playboicarti',
             description: 'Get a playboi carti related pic. slatt'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'kanye',
+            description: 'Get a Ye related pic.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'gaming',
+            description: 'Get a gaming related pic.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'shitpost',
+            description: 'Get a shitpost.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'data',
+            description: 'Get a visualization of random data.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'tweet',
+            description: 'Get a random tweet.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'rareinsult',
+            description: 'Get a pic with a rare insult.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'interesting',
+            description: 'See something interesting.'
         }
     ],
 
@@ -67,6 +102,51 @@ export default {
         } else if (subcommand === 'playboicarti') {
             const subreddits = [
                 "playboicarti"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if (subcommand === 'kanye') {
+            const subreddits = [
+                "WestSubEver",
+                "Kanye"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if (subcommand === 'gaming') {
+            const subreddits = [
+                "gaming"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if (subcommand === 'shitpost') {
+            const subreddits = [
+                "shitposting"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if (subcommand === 'data') {
+            const subreddits = [
+                "dataisbeautiful"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if (subcommand === 'tweet') {
+            const subreddits = [
+                "WhitePeopleTwitter",
+                "BlackPeopleTwitter"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if(subcommand === 'rareinsult') {
+            const subreddits = [
+                "rareinsults"
+            ]
+            return pic(subreddits, subcommand)
+
+        } else if(subcommand === 'interesting') {
+            const subreddits = [
+                "interestingasfuck",
+                "mildlyinteresting"
             ]
             return pic(subreddits, subcommand)
 
