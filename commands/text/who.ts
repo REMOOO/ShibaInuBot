@@ -32,6 +32,11 @@ export default {
             type: 'SUB_COMMAND',
             name: 'sus',
             description: 'Find the sus user.'
+        },
+        {
+            type: 'SUB_COMMAND',
+            name: 'simp',
+            description: 'Find the biggest simp.'
         }
     ],
 
@@ -58,8 +63,10 @@ export default {
 
         } else if (subcommand === 'sus') {
             return who(interaction, 'is big sus ඞ🧐', 'loves minors tho')
+        
+        } else if (subcommand === 'simp') {
+            return who(interaction, 'is the biggest simp 🥺', 'is the one who gets simped 😳')
         }
-
     }
 } as ICommand
 
