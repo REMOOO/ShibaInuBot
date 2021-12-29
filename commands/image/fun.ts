@@ -1,4 +1,4 @@
-import { WebhookClient, MessageEmbed, User, CacheType, CommandInteraction, MessageAttachment } from "discord.js";
+import { WebhookClient, MessageEmbed, User, CacheType, CommandInteraction, MessageAttachment, Guild } from "discord.js";
 import { ICommand } from "wokcommands";
 const Canvas = require('canvas')
 const gm = require("gm")
@@ -161,10 +161,12 @@ export default {
         let user = interaction.options.getUser('user')
         const webhook = new WebhookClient({ url: process.env.COMMANDS_URL! })
 
-        const embed = new MessageEmbed()
-            .setTitle(`fun ${subcommand} ${user?.username} in ${guild?.name}`)
-            .setColor('GREEN')
-        await webhook.send({ embeds: [embed] })
+        if (subcommand !== 'koekerond') {
+            const embed = new MessageEmbed()
+                .setTitle(`fun ${subcommand} ${user?.username} in ${guild?.name}`)
+                .setColor('GREEN')
+            await webhook.send({ embeds: [embed] })
+        }
 
         if (subcommand === '3ds') {
             return threeds(user, interaction)
@@ -188,7 +190,7 @@ export default {
             return kanye(user, interaction)
 
         } else if (subcommand === 'koekerond') {
-            return koekerond(user, interaction)
+            return koekerond(user, interaction, guild, webhook)
 
         } else if (subcommand === 'magik') {
             return magik(user, interaction)
@@ -332,7 +334,7 @@ async function kanye(user: User | null, interaction: CommandInteraction<CacheTyp
     createInt(canvas, interaction, 'kanye');
 }
 
-async function koekerond(user: User | null, interaction: CommandInteraction<CacheType>) {
+async function koekerond(user: User | null, interaction: CommandInteraction<CacheType>, guild: Guild | null, webhook: WebhookClient) {
     let image
     image = await defineImage(user, interaction, image);
 
@@ -348,6 +350,13 @@ async function koekerond(user: User | null, interaction: CommandInteraction<Cach
     ctx.closePath()
     ctx.clip()
     ctx.drawImage(image, 100, 85, 200, 200)
+
+    const embedAttachment = new MessageAttachment(canvas.toBuffer(), 'koekerond.png')
+    const embed = new MessageEmbed()
+        .setTitle(`fun koekerond ${user?.username} in ${guild?.name}`)
+        .setColor('GREEN')
+        .setImage('attachment://koekerond.png')
+    await webhook.send({ embeds: [embed], files: [embedAttachment] })
 
     createInt(canvas, interaction, 'koekerond');
 }
